@@ -17,10 +17,19 @@ function fetchGetPets() {
     .then(pets => pets.forEach(pet => appendPet(pet)))
 }
 
-function fetchUser(){
-    fetch('http://localhost:3000/users')
+function fetchUser(e){
+    e.preventDefault()
+    console.log(e)
+    debugger
+    if (e.target.username.value === User.username) {
+        let id = User.id
+    }
+    //how can we access user's id?
+    //preferably is there a way to access sessions
+    fetch('http://localhost:3000/users/id')
     .then(res => res.json())
-    .then(json => json.forEach(user => renderUserProfile(user)))
+    .then(json => renderUserProfile(json))
+    // .then(json => json.forEach(user => renderUserProfile(user)))
 }
 //will need to interpolate so that we can get current user
 
@@ -44,7 +53,7 @@ const agencyInfo = (agency) => {
 
 
 const appendPet = (pet) => {
-    console.log(pet)
+    // console.log(pet)
     let {name, species, breed, age, bio, image_url, available} = pet
     
     let avail = available ? "" : "Pending Adoption"
@@ -88,7 +97,7 @@ const renderUserProfile = (user) => {
 }
 fetchAgency()
 fetchGetPets()
-fetchUser()
+// fetchUser()
 
 function newAccount() {
     collection.innerHTML =`
@@ -127,8 +136,8 @@ function userLogin(){
         // <label>Password:</label>
         // <input type='text' name='name' value='' placeholder='Enter Password' class='input-text'/>
 // add this to innerHTML when we add auth
-
+// debugger
 let form = document.querySelector('form')
-console.log(form)
-form.addEventListener('sumbit', fetchUser)
+// console.log(form)
+form.addEventListener('submit', e => fetchUser(e))
 }
