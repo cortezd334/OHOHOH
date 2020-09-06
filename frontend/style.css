@@ -42,7 +42,7 @@ body {
     width: auto;
   }
   
-  /* button {
+  button {
     position: relative;
     background-color: #e04b52;
     border: none;
@@ -60,7 +60,7 @@ body {
     color: #e04b52;
   } */
   
-  /* .container {
+   .container {
     padding: 1rem;
     width: stretch;
     height: auto;
@@ -69,11 +69,11 @@ body {
     opacity: .8;
   } this one does not allow for agency to display on page*/
   
-  /* .add-toy-form {
+   .add-pet-form {
     width: 80%
   } */
   
-  /* .submit {
+   .submit {
     position: relative;
     background-color: #e04b52;
     border-radius: 5px;
@@ -90,7 +90,7 @@ body {
     background-color: whitesmoke;
     border: #e04b52 solid 1px;
     color: #e04b52;
-  } */
+  }
   
   
   .input-text {
