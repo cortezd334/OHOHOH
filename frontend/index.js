@@ -16,7 +16,7 @@ function fetchGetPets() {
 function fetchUser(){
     fetch('http://localhost:3000/users')
     .then(res => res.json())
-    .then(json => renderUserProfile(json))
+    .then(json => json.forEach(user => renderUserProfile(user)))
 }
 //will need to interpolate so that we can get current user
 
@@ -68,7 +68,20 @@ const renderUserProfile = (user) => {
 
     const {name, age, email, username, preference} = user
 
-    // collection
+    collection.innerHTML = `
+    <div id='MyProfile'>
+        <h2>${name}</h2>
+        <label>Username:</label>
+        <p>${username}</p>
+        <label>Email Address:</label>
+        <p>${email}</p>
+        <label>Age:</label>
+        <p>${age}</p>
+        <label>Which pet would you prefer to adopt:</label>
+        <p>${preference}</p>
+    </div>
+    `
+    
 }
 fetchAgency()
 fetchGetPets()
