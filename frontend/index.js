@@ -1,6 +1,7 @@
 let addPet = false
 const collection = document.querySelector('#pet-collection')
 const header = document.getElementById('pet-header')
+
 const newPetForm = document.querySelector('.add-pet-form')
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -18,6 +19,12 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   newPetForm.addEventListener('submit', (e) => appendPet(e))
+
+
+const signup = document.getElementById('signup')
+signup.addEventListener('click', newAccount)
+const login = document.getElementById('login')
+login.addEventListener('click', userLogin)
 
 
 function fetchAgency() {
@@ -194,3 +201,46 @@ addNewPet()
 fetchAgency()
 fetchGetPets()
 fetchUser()
+
+function newAccount() {
+    collection.innerHTML =`
+    <h2>Welcome to OHOHOH!</h2>
+    <h4>Create an Account</h4>
+    <form class='user-form'>
+        <label>Name:</label>
+        <input type='text' name='name' value='' placeholder='Enter Name Here' class='input-text'/>
+        </br>
+        <label>Username:</label>
+        <input type='text' name='username' value='' placeholder='Enter Username Here' class='input-text'/>
+        </br>
+        <input type='submit' name='submit' value='Create Account'
+        class='submit'/>
+    </form>
+        `
+        // <label>Password:</label>
+        // <input type='text' name='name' value='' placeholder='Create Password' class='input-text'/>
+// add this to innerHTML when we add auth
+
+//need to make a function call to render homepage
+}
+
+function userLogin(){
+    collection.innerHTML =`
+    <h2>Welcome to OHOHOH!</h2>
+    <h4>Please Log In</h4>
+    <form class='user-form'>
+        <label>Username:</label>
+        <input type='text' name='username' value='' placeholder='Enter Username Here' class='input-text'/>
+        </br>
+        <input type='submit' name='submit' value='Log In'
+        class='submit'/>
+    </form>
+    `
+        // <label>Password:</label>
+        // <input type='text' name='name' value='' placeholder='Enter Password' class='input-text'/>
+// add this to innerHTML when we add auth
+
+let form = document.querySelector('form')
+console.log(form)
+form.addEventListener('sumbit', fetchUser)
+}
