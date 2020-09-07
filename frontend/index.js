@@ -1,30 +1,13 @@
 let addPet = false
 const collection = document.querySelector('#pet-collection')
 const header = document.getElementById('pet-header')
-
-const newPetForm = document.querySelector('.add-pet-form')
-
-document.addEventListener("DOMContentLoaded", () => {
-    const addBtn = document.querySelector("#new-pet-btn")
-    const petFormContainer = document.querySelector(".container")
-    addBtn.addEventListener("click", () => {
-      // hide & seek with the form
-      addPet = !addPet
-      if (addPet) {
-        petFormContainer.style.display = "block"
-      } else {
-        petFormContainer.style.display = "none"
-      }
-    })
-  })
-
-  newPetForm.addEventListener('submit', (e) => appendPet(e))
-
-
 const signup = document.getElementById('signup')
 signup.addEventListener('click', newAccount)
 const login = document.getElementById('login')
 login.addEventListener('click', userLogin)
+const alogin = document.getElementById('agencylogin')
+alogin.addEventListener('click', agencyLogin)
+const petFormContainer = document.querySelector(".container")
 
 
 function fetchAgency() {
@@ -37,18 +20,28 @@ function fetchGetPets() {
     fetch('http://localhost:3000/pets')
     .then(resp => resp.json())
     .then(pets => pets.forEach(pet => appendPet(pet)))
+    // .then(pets => appendPet(pets), agencyLogin(pets))
 }
 
-function fetchUser(){
-    fetch('http://localhost:3000/users')
+function fetchUser(e){
+    e.preventDefault()
+    console.log(e)
+    debugger
+    if (e.target.username.value === User.username) {
+        let id = User.id
+    }
+    //how can we access user's id?
+    //preferably is there a way to access sessions
+    fetch('http://localhost:3000/users/id')
     .then(res => res.json())
-    .then(json => json.forEach(user => renderUserProfile(user)))
+    .then(json => renderUserProfile(json))
+    // .then(json => json.forEach(user => renderUserProfile(user)))
 }
 //will need to interpolate so that we can get current user
 
 const agencyInfo = (agency) => {
 
-    let {name,established, description} = agency
+    let {name, established, description} = agency
 
     let title = document.createElement('h1')
     title.textContent = `${name}`
@@ -66,7 +59,7 @@ const agencyInfo = (agency) => {
 
 
 const appendPet = (pet) => {
-    console.log(pet)
+
     let {name, species, breed, age, bio, image_url, available} = pet
     
     let avail = available ? "" : "Pending Adoption"
@@ -109,64 +102,70 @@ const renderUserProfile = (user) => {
     `
 }
 
-function newPetForm {
-    collection.innerHTML =
-    `<form class="add-pet-form">
-    <h3>Add a pet for adoption</h3> 
+function agencyLogin(){
+//originally made button here to do the hide n seek, but page would auto refresh so it wouldn't persist on the screen
+    // let newbtn = document.createElement('button') 
+    // newbtn.id="new-pet-btn"
+    // newbtn.textContent = 'Add Pet For Adoption'
+    
+    // petFormContainer.prepend(newbtn)
 
-    <input
-        type="text"
-        name="name"
-        value=""
-        placeholder="Enter pet's name..."
-        class="input-text"
-        />
-        <br />
-        <input
-        type="text"
-        name="image"
-        value=""
-        placeholder="Enter pets's image URL..."
-        class="input-text"
-        />
-        <br />
-        <input
-        type="text"
-        name="species"
-        value=""
-        placeholder="Enter species..."
-        class="input-text"
-        />
-        <br />
-        <input
-        type="integer"
-        name="age"
-        value=""
-        placeholder="Enter age..."
-        class="input-text"
-        />
-        <br />
-        <input
-        type="text"
-        name="bio"
-        value=""
-        placeholder="Enter pet description..."
-        class="input-text"
-        />
-        <br />
+    collection.innerHTML = ''
 
-        <input
-        type="submit"
-        name="submit"
-        value="Add Pet to Adoption List"
-        class="submit"
-        />
-    </form> 
-    </div> 
-    <p style="text-align:center">
-    <button id="new-pet-btn">Add Pet For adoption</button>
-    </p>`
+    fetch('http://localhost:3000/pets')
+    .then(resp => resp.json())
+    .then(pets => pets.forEach(pet => agencyPage(pet)))
 }
+
+const agencyPage = (pet) => {
+
+    let {name, species, breed, age, bio, image_url, available} = pet
+//this should be the hide and seek function but would persist on the screen and once button was clicked, would disappear
+
+    // const addBtn = document.querySelector("#new-pet-btn")
+    // addBtn.addEventListener("click", () => {
+    //   // hide & seek with the form
+    //   addPet = !addPet
+    //   if (addPet) {
+    //     petFormContainer.style.display = "block"
+    //   } else {
+    //     petFormContainer.style.display = "none"
+    //   }
+    // })
+
+    petFormContainer.innerHTML =
+    `<form class="add-pet-form">
+        <h3>Add a pet for adoption</h3> 
+        <input type="text" name="name" value="" placeholder="Enter pet's name..." class="input-text"/>
+        <br />
+        <input type="text" name="image" value="" placeholder="Enter pet's image URL..." class="input-text"/>
+        <br />
+        <input type="text" name="species" value="" placeholder="Enter species..." class="input-text"/>
+        <br />
+        <input type="integer" name="age" value="" placeholder="Enter age..." class="input-text"/>
+        <br />
+        <input type="text" name="bio" value="" placeholder="Enter pet description..." class="input-text"/>
+        <br />
+        <input type="submit" name="submit" value="Add Pet to Adoption List" class="submit"/>
+    </form> `
+    
+    collection.innerHTML += 
+    `<div class="agency-card">
+    <h2>${name}</h2>
+    <h4 id="species">${species}</h4>
+    <h4 id="breed"> ${breed}</h4>
+    <p id="age"> ${age}</p>
+    <p id="bio"> ${bio}</p>
+    <img src=${image_url} class="pet-avatar" />
+    <p id="available"></p>
+    </div>`
+
+    const newPetForm = document.querySelector('.add-pet-form')
+    newPetForm.addEventListener('submit', addNewPet)
+
+    //what info do we want to show on the agency side? Should style the cards differently so that it's obviously a different login
+}
+//need to make an actual login for agency
 
 const addNewPet = (e) => {
     e.preventDefault()
@@ -185,22 +184,23 @@ const addNewPet = (e) => {
         bio: newPetBio
         // available: true
     }
-// let newPetName = 
 
     fetch('http://localhost:3000/pets', { 
         method: 'POST',
-        headers: { 'Content-Type': 'application/json',
-        Accept: 'application/json'
+        headers: { 
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
         },
         body: JSON.stringify(newPetInfo)
     })
     .then(resp => resp.json())
     .then(pet => {appendPet(pet)})
 }
-addNewPet()
+//when submitted, displays new pet in agency login but doesn't persist in either agency or user
+
 fetchAgency()
 fetchGetPets()
-fetchUser()
+// fetchUser()
 
 function newAccount() {
     collection.innerHTML =`
@@ -239,8 +239,8 @@ function userLogin(){
         // <label>Password:</label>
         // <input type='text' name='name' value='' placeholder='Enter Password' class='input-text'/>
 // add this to innerHTML when we add auth
-
+// debugger
 let form = document.querySelector('form')
-console.log(form)
-form.addEventListener('sumbit', fetchUser)
+// console.log(form)
+form.addEventListener('submit', e => fetchUser(e))
 }

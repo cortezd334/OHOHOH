@@ -10,7 +10,7 @@ class AuthController < ApplicationController
         render json: user
       else 
         flash[:message] = "Please enter the right credentials"
-        render json: agency
+        render json: agency 
       end
     end
 end
