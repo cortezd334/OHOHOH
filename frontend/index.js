@@ -102,7 +102,28 @@ const renderUserProfile = (user) => {
     `
 }
 
+
 function agencyLogin(){
+    collection.innerHTML =`
+    <h2>Employee Log In</h2>
+    <h4>Enter Username and Password</h4>
+    <form class='user-form'>
+        <label>Username:</label>
+        <input type='text' name='username' value='' placeholder='Enter Username Here' class='input-text'/>
+        </br>
+        <input type='submit' name='submit' value='Log In'
+        class='submit'/>
+    </form>
+    `
+        // <label>Password:</label>
+        // <input type='text' name='name' value='' placeholder='Enter Password' class='input-text'/>
+// add this to innerHTML when we add auth
+// debugger
+let form = document.querySelector('form')
+form.addEventListener('submit', agencySideFetch)
+}
+
+const agencySideFetch = () => {
 //originally made button here to do the hide n seek, but page would auto refresh so it wouldn't persist on the screen
     // let newbtn = document.createElement('button') 
     // newbtn.id="new-pet-btn"
