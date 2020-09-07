@@ -8,6 +8,11 @@ login.addEventListener('click', userLogin)
 const alogin = document.getElementById('agencylogin')
 alogin.addEventListener('click', agencyLogin)
 const petFormContainer = document.querySelector(".container")
+const viewpets = document.getElementById('viewpets')
+viewpets.addEventListener('click', fetchGetPets)
+
+//collection.innerHTML = '' removes whatever keeps showing up on the page
+//petFormContainer.innerHTML = '' removes the make a new pet form
 
 
 function fetchAgency() {
@@ -17,27 +22,40 @@ function fetchAgency() {
 }
 
 function fetchGetPets() {
+    collection.innerHTML = ''
+
     fetch('http://localhost:3000/pets')
     .then(resp => resp.json())
     .then(pets => pets.forEach(pet => appendPet(pet)))
-    // .then(pets => appendPet(pets), agencyLogin(pets))
 }
 
-function fetchUser(e){
+function userLoggedIn(e){
     e.preventDefault()
+    console.log(localStorage)
     console.log(e)
-    debugger
-    if (e.target.username.value === User.username) {
-        let id = User.id
-    }
-    //how can we access user's id?
-    //preferably is there a way to access sessions
-    fetch('http://localhost:3000/users/id')
+    localStorage.id? fetchUser() : localStorage.setItem('username', e.target.username.value), getUserId()
+}
+
+function fetchUser() {
+    fetch(`http://localhost:3000/users/${localStorage.id}`)
     .then(res => res.json())
     .then(json => renderUserProfile(json))
-    // .then(json => json.forEach(user => renderUserProfile(user)))
 }
-//will need to interpolate so that we can get current user
+
+function getUserId() {
+    fetch(`http://localhost:3000/users`)
+    .then(res => res.json())
+    .then(json => json.forEach(user => {
+    if(localStorage.username === user.username){
+        renderUserProfile(user)
+    }
+    }))
+}
+
+fetchAgency()
+// fetchGetPets()
+// fetchUser()
+
 
 const agencyInfo = (agency) => {
 
@@ -61,6 +79,8 @@ const agencyInfo = (agency) => {
 const appendPet = (pet) => {
 
     let {name, species, breed, age, bio, image_url, available} = pet
+    
+    petFormContainer.innerHTML = ''
     
     let avail = available ? "" : "Pending Adoption"
 
@@ -104,6 +124,8 @@ const renderUserProfile = (user) => {
 
 
 function agencyLogin(){
+    collection.innerHTML = ''
+
     collection.innerHTML =`
     <h2>Employee Log In</h2>
     <h4>Enter Username and Password</h4>
@@ -186,7 +208,6 @@ const agencyPage = (pet) => {
 
     //what info do we want to show on the agency side? Should style the cards differently so that it's obviously a different login
 }
-//need to make an actual login for agency
 
 const addNewPet = (e) => {
     e.preventDefault()
@@ -219,11 +240,10 @@ const addNewPet = (e) => {
 }
 //when submitted, displays new pet in agency login but doesn't persist in either agency or user
 
-fetchAgency()
-fetchGetPets()
-// fetchUser()
+
 
 function newAccount() {
+    petFormContainer.innerHTML = ''
     collection.innerHTML =`
     <h2>Welcome to OHOHOH!</h2>
     <h4>Create an Account</h4>
@@ -243,9 +263,16 @@ function newAccount() {
 // add this to innerHTML when we add auth
 
 //need to make a function call to render homepage
+// createUser()
+let form = document.getElementsByTagName('form')[0]
+form.addEventListener('submit', (e) => userLogin(e))
+form.addEventListener('submit', (e) => createUser(e))
 }
 
-function userLogin(){
+function userLogin(e){
+    e.preventDefault()
+     console.log(e)
+    petFormContainer.innerHTML = ''
     collection.innerHTML =`
     <h2>Welcome to OHOHOH!</h2>
     <h4>Please Log In</h4>
@@ -261,7 +288,28 @@ function userLogin(){
         // <input type='text' name='name' value='' placeholder='Enter Password' class='input-text'/>
 // add this to innerHTML when we add auth
 // debugger
+
 let form = document.querySelector('form')
 // console.log(form)
-form.addEventListener('submit', e => fetchUser(e))
+form.addEventListener('submit', userLoggedIn)
+}
+
+const createUser = (e) => {
+    e.preventDefault()
+    let name = e.target.name.value
+    let username = e.target.username.value
+    localStorage.setItem('username', username)
+    localStorage.setItem('name', name)
+
+    console.log(localStorage)
+    fetch('http://localhost:3000/users', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+        },
+        body: JSON.stringify({username: localStorage.username, name: localStorage.name})
+    })
+    .then(res => res.json())
+    .then(user => localStorage.setItem('id', user.id))
 }
