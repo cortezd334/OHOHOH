@@ -79,21 +79,16 @@ const agencyInfo = (agency) => {
 
 const appendPet = (pet) => {
 
-    let {name, species, breed, age, bio, image_url, available} = pet
+    let {name, species, breed, age, bio, image_url, available, id} = pet
     
     petFormContainer.innerHTML = ''
     
     let avail = available ? "" : "Pending Adoption"
 
-    let btn = document.createElement('button')
-    btn.className = 'adopt-btn'
-    if(available === true){
-        btn.textContent = "Adopt Me!"
-        collection.append(btn)
-    }
+    
     
     collection.innerHTML += 
-        `<div class="card">
+        `<div class="card" id=${id}>
             <h2>${name}</h2>
             <h4 id="species">${species}</h4>
             <h4 id="breed"> ${breed}</h4>
@@ -101,8 +96,21 @@ const appendPet = (pet) => {
             <p id="bio"> ${bio}</p>
             <img src=${image_url} class="pet-avatar" />
             <p id="available"> ${avail} </p>
-        </div>`
-}
+        </div>` 
+        
+        let petAvatar =document.getElementById(`${id}`)
+    console.log(petAvatar)
+        
+        let btn = document.createElement('button')
+        btn.className = 'adopt-btn'
+        if(available === true){
+            btn.textContent = "Adopt Me!"
+            petAvatar.append(btn)
+        }
+    }
+
+      // <button id=${id}></button>
+
 
 const renderUserProfile = (user) => {
 
