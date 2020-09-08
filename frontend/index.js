@@ -10,6 +10,7 @@ alogin.addEventListener('click', agencyLogin)
 const petFormContainer = document.querySelector(".container")
 const viewpets = document.getElementById('viewpets')
 viewpets.addEventListener('click', fetchGetPets)
+// const adoptButton = document.querySelector('.adopt-button')
 
 //collection.innerHTML = '' removes whatever keeps showing up on the page
 //petFormContainer.innerHTML = '' removes the make a new pet form
