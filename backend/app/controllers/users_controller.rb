@@ -16,12 +16,13 @@ class UsersController < ApplicationController
     end
 
     def update
-        user = User.find_by(params[:id])
+        user = User.find(params[:id])
+        user.update(user_params)
         render json: user
     end
 
     def delete
-        user = User.find_by(params[:id])
+        user = User.find(params[:id])
         user.destroy
     end
 

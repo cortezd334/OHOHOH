@@ -17,7 +17,7 @@ viewpets.addEventListener('click', fetchGetPets)
 
 
 function fetchAgency() {
-    fetch('http://localhost:3000/agencies/1')
+    fetch('http://localhost:3000/agencies')
     .then(res => res.json())
     .then(json => agencyInfo(json))
 }
@@ -32,11 +32,7 @@ function fetchGetPets() {
 
 function userLoggedIn(e){
     e.preventDefault()
-    console.log(localStorage)
-    console.log(e)
-    console.log(e.target.username.value)
     localStorage.id? fetchUser() : localStorage.setItem('username', e.target.username.value), getUserId()
-    console.log(localStorage)
 }
 
 function fetchUser() {
@@ -46,11 +42,11 @@ function fetchUser() {
 }
 
 function getUserId() {
-    console.log('am I getting here?')
     fetch(`http://localhost:3000/users`)
     .then(res => res.json())
     .then(json => json.forEach(user => {
     if(localStorage.username === user.username){
+        localStorage.setItem('id', user.id)
         renderUserProfile(user)
     }
     }))
@@ -102,7 +98,6 @@ const appendPet = (pet) => {
         </div>` 
         
         let petAvatar =document.getElementById(`${id}`)
-    console.log(petAvatar)
         
         let btn = document.createElement('button')
         btn.className = 'adopt-btn'
@@ -110,9 +105,7 @@ const appendPet = (pet) => {
             btn.textContent = "Adopt Me!"
             petAvatar.append(btn)
         }
-    }
-
-      // <button id=${id}></button>
+}
 
 
 const renderUserProfile = (user) => {
@@ -130,8 +123,71 @@ const renderUserProfile = (user) => {
         <p>${age}</p>
         <label>Which pet would you prefer to adopt:</label>
         <p>${preference}</p>
+        <button id='update'>Update Profile</button>
+        <button id='delete'>Delete Profile</button>
     </div>
     `
+    let updateBtn = document.getElementById('update')
+    updateBtn.addEventListener('click', (e) => updateForm(e, user))
+    let deleteBtn = document.getElementById('delete')
+}
+
+const updateForm = (e, user) => {
+    // const {name, age, email, username, preference} = user
+    // is there a way we can pre-plot these?
+    //user will be available when we do
+    collection.innerHTML =`
+    <h4>Update Profile</h4>
+    <form class='user-form'>
+        <label>Name:</label>
+        <input type='text' name='name' value='' placeholder='Enter Name Here' class='input-text'/>
+        </br>
+        <label>Username:</label>
+        <input type='text' name='username' value='' placeholder='Enter Username Here' class='input-text'/>
+        </br>
+        <label>Email Address:</label>
+        <input type='text' name='email' value='' placeholder='Enter Email Address Here' class='input-text'/>
+        </br>
+        <label>Age:</label>
+        <input type='text' name='age' value='' placeholder='Enter Age Here' class='input-text'/>
+        </br>
+        <label>Pet I would prefer to adopt:</label>
+        <input type='text' name='preference' value='' placeholder='Enter Pet Preference Here' class='input-text'/>
+        </br>
+        <input type='submit' name='submit' value='Update Profile'
+        class='submit'/>
+    </form>
+    `
+    console.log(user)
+    let form = document.querySelector('form')
+    form.addEventListener('submit', (e) => updateProfile(e))
+}
+
+const updateProfile = (e) => {
+    console.log(e)
+    e.preventDefault()
+
+    const{name, username, email, age, preference} = e.target
+
+    data = {
+        name: name.value,
+        username: username.value,
+        email: email.value,
+        age: age.value,
+        preference: preference.value
+    }
+    console.log(data)
+
+    fetch(`http://localhost:3000/users/${localStorage.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(json => renderUserProfile(json))
 }
 
 
@@ -283,7 +339,7 @@ form.addEventListener('submit', (e) => createUser(e))
 
 function userLogin(e){
     e.preventDefault()
-     console.log(e)
+
     petFormContainer.innerHTML = ''
     collection.innerHTML =`
     <h2>Welcome to OHOHOH!</h2>
