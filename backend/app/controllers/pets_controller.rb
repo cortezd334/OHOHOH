@@ -11,6 +11,7 @@ class PetsController < ApplicationController
     end
 
     def create
+        debugger
         pet = Pet.create(pet_params)
         render json: pet
     end
@@ -27,6 +28,6 @@ class PetsController < ApplicationController
 
     private
     def pet_params
-        params.require(:pet).permit(:name, :species, :breed, :age, :image_url, :bio, :available, :agency_id, :user_id)
+        params.require(:pet).permit(:name, :species, :breed, :age, :image_url, :bio, :available, :agency_id)
     end
 end

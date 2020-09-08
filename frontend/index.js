@@ -34,7 +34,9 @@ function userLoggedIn(e){
     e.preventDefault()
     console.log(localStorage)
     console.log(e)
+    console.log(e.target.username.value)
     localStorage.id? fetchUser() : localStorage.setItem('username', e.target.username.value), getUserId()
+    console.log(localStorage)
 }
 
 function fetchUser() {
@@ -44,6 +46,7 @@ function fetchUser() {
 }
 
 function getUserId() {
+    console.log('am I getting here?')
     fetch(`http://localhost:3000/users`)
     .then(res => res.json())
     .then(json => json.forEach(user => {
@@ -133,6 +136,7 @@ const renderUserProfile = (user) => {
 
 
 function agencyLogin(){
+    petFormContainer.innerHTML = ''
     collection.innerHTML = ''
 
     collection.innerHTML =`
@@ -150,7 +154,7 @@ function agencyLogin(){
         // <input type='text' name='name' value='' placeholder='Enter Password' class='input-text'/>
 // add this to innerHTML when we add auth
 // debugger
-let form = document.querySelector('form')
+let form = document.querySelector('.user-form')
 form.addEventListener('submit', agencySideFetch)
 }
 
@@ -186,7 +190,7 @@ const agencyPage = (pet) => {
     // })
 
     petFormContainer.innerHTML =
-    `<form class="add-pet-form">
+    `<form id="add-pet-form">
         <h3>Add a pet for adoption</h3> 
         <input type="text" name="name" value="" placeholder="Enter pet's name..." class="input-text"/>
         <br />
@@ -212,7 +216,7 @@ const agencyPage = (pet) => {
     <p id="available"></p>
     </div>`
 
-    const newPetForm = document.querySelector('.add-pet-form')
+    const newPetForm = document.querySelector('#add-pet-form')
     newPetForm.addEventListener('submit', addNewPet)
 
     //what info do we want to show on the agency side? Should style the cards differently so that it's obviously a different login
@@ -220,7 +224,7 @@ const agencyPage = (pet) => {
 
 const addNewPet = (e) => {
     e.preventDefault()
-// debugger
+
     newPetName = e.target.name.value
     newPetImage = e.target.image.value
     newPetSpecies = e.target.species.value
@@ -232,8 +236,9 @@ const addNewPet = (e) => {
         image: newPetImage,
         species: newPetSpecies,
         age: newPetAge,
-        bio: newPetBio
-        // available: true
+        bio: newPetBio,
+        available: true,
+        agency_id: 5
     }
 
     fetch('http://localhost:3000/pets', { 
@@ -247,8 +252,6 @@ const addNewPet = (e) => {
     .then(resp => resp.json())
     .then(pet => {appendPet(pet)})
 }
-//when submitted, displays new pet in agency login but doesn't persist in either agency or user
-
 
 
 function newAccount() {
