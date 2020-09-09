@@ -297,6 +297,8 @@ const agencySideFetch = () => {
             <br />
             <input type="text" name="species" value="" placeholder="Enter species..." class="input-text"/>
             <br />
+            <input type="text" name="breed" value="" placeholder="breed..." class="input-text"/>
+            <br />
             <input type="integer" name="age" value="" placeholder="Enter age..." class="input-text"/>
             <br />
             <input type="text" name="bio" value="" placeholder="Enter pet description..." class="input-text"/>
@@ -349,25 +351,11 @@ const agencyPage = (pet) => {
     <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
     </div>`
 
-
-    
-
-    // create Buttons
-    // check if available === true
-    // if true evaluate to ""
-    // if false evaluete to approve addoption
     let agencyCard = document.getElementById(`${id}`)
     let btn = document.getElementById(`adpt-${id}`)
-    // btn.addEventListener('click', (e) => assignPetToUser(e))
-    // btn.addEventListener('click', (e) => deleteAdoptedPet)
-        // btn.className = 'approve-adoption-btn'
         if(available === false){
-            // btn.textContent = "Approve Adoption"
-            // agencyCard.append(btn)
             btn.style.display = 'block'
         }
-        // console.log(btn)
-        
         
     //what info do we want to show on the agency side? Should style the cards differently so that it's obviously a different login
 }
@@ -383,12 +371,14 @@ const addNewPet = (e) => {
     newPetSpecies = e.target.species.value
     newPetAge = e.target.age.value
     newPetBio = e.target.bio.value
+    newPetBreed = e.target.breed.value
 
     let newPetInfo = {
         name: newPetName,
-        image: newPetImage,
+        image_url: newPetImage,
         species: newPetSpecies,
         age: newPetAge,
+        breed: newPetBreed,
         bio: newPetBio,
         available: true,
         agency_id: 2
@@ -403,9 +393,33 @@ const addNewPet = (e) => {
         body: JSON.stringify(newPetInfo)
     })
     .then(resp => resp.json())
-    .then(pet => {appendPet(pet)})
+    // .then(console.log)
+    .then(pet => {
+        collection.innerHTML += 
+        `<div class="agency-card" id=${pet.id}>
+            <h2>${pet.name}</h2>
+            <h4 id="species">${pet.species}</h4>
+            <h4 id="breed"> ${pet.breed}</h4>
+            <p id="age"> ${pet.age}</p>
+            <p id="bio"> ${pet.bio}</p>
+            <img src=${pet.image_url} class="pet-avatar" />
+            <p id="available"></p>
+            <button id='adpt-${pet.id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
+        </div>`
+    })
 }
 
+// collection.innerHTML += 
+// `<div class="agency-card" id=${id}>
+// <h2>${name}</h2>
+// <h4 id="species">${species}</h4>
+// <h4 id="breed"> ${breed}</h4>
+// <p id="age"> ${age}</p>
+// <p id="bio"> ${bio}</p>
+// <img src=${image_url} class="pet-avatar" />
+// <p id="available"></p>
+// <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
+// </div>`
 
 function newAccount() {
     petFormContainer.innerHTML = ''
