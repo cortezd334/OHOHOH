@@ -219,10 +219,10 @@ const updateProfile = (e) => {
 
 const deleteUser = () => {
 
-    collection.innerHTML = ''
-    collection.innerHTML = `
-    <h3>Your Account Has Been Deleted</h3>
-    `
+    // collection.innerHTML = ''
+    // collection.innerHTML = `
+    // <h3>Your Account Has Been Deleted</h3>
+    // `
     fetch(`http://localhost:3000/users/${localStorage.id}`, {
         method: 'DELETE',
         headers: {
