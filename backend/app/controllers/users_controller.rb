@@ -21,9 +21,8 @@ class UsersController < ApplicationController
         render json: user
     end
 
-    def delete
-        byebug
-        user = User.find_by(id: params[:id])
+    def destroy
+        user = User.find(params[:id])
         user.destroy
         render json: {error: "Your account has been deleted"}
     end
