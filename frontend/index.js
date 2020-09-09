@@ -241,12 +241,6 @@ form.addEventListener('submit', agencySideFetch)
 }
 
 const agencySideFetch = () => {
-//originally made button here to do the hide n seek, but page would auto refresh so it wouldn't persist on the screen
-    // let newbtn = document.createElement('button') 
-    // newbtn.id="new-pet-btn"
-    // newbtn.textContent = 'Add Pet For Adoption'
-    
-    // petFormContainer.prepend(newbtn)
 
     collection.innerHTML = ''
 
@@ -258,18 +252,6 @@ const agencySideFetch = () => {
 const agencyPage = (pet) => {
 
     let {name, species, breed, age, bio, image_url, id, available} = pet
-//this should be the hide and seek function but would persist on the screen and once button was clicked, would disappear
-
-    // const addBtn = document.querySelector("#new-pet-btn")
-    // addBtn.addEventListener("click", () => {
-    //   // hide & seek with the form
-    //   addPet = !addPet
-    //   if (addPet) {
-    //     petFormContainer.style.display = "block"
-    //   } else {
-    //     petFormContainer.style.display = "none"
-    //   }
-    // })
 
     petFormContainer.innerHTML =
     `<form id="add-pet-form">
@@ -396,7 +378,6 @@ function userLogin(e){
 // debugger
 
 let form = document.querySelector('form')
-// console.log(form)
 form.addEventListener('submit', userLoggedIn)
 }
 
