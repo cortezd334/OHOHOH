@@ -8,7 +8,7 @@ class CreatePets < ActiveRecord::Migration[6.0]
       t.string :image_url
       t.text :bio
       t.boolean :available
-      t.string :adoption_status
+      t.boolean :accept_adoption
       t.integer :agency_id
       t.integer :user_id
 
