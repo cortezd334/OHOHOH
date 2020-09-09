@@ -11,13 +11,14 @@ class PetsController < ApplicationController
     end
 
     def create
-        debugger
+        # debugger
         pet = Pet.create(pet_params)
         render json: pet
     end
 
     def update
-        pet = Pet.find_by(params[:id])
+        pet = Pet.find(params[:id])
+        pet.update(pet_params)
         render json: pet
     end
 

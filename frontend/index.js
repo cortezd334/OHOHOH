@@ -105,8 +105,34 @@ const appendPet = (pet) => {
             btn.textContent = "Adopt Me!"
             petAvatar.append(btn)
         }
+        collection.addEventListener('click', (e) => adoptPet(e, pet))
 }
 
+const adoptPet = (e, pet) => {
+    if(e.target.matches('button')){
+        // console.log(pet)
+        let id = e.target.parentElement.id
+        let availablity = e.target.previousElementSibling
+        if (pet.id == id){
+            pet.available = !pet.available
+            
+            let data = {available: pet.available}
+            fetch(`http://localhost:3000/pets/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                },
+                    body: JSON.stringify(data)
+                })
+                .then(res => res.json())
+                .then(json => {let avail = json.available ? "" : "Pending Adoption"
+                availablity.textContent = avail
+                e.target.remove()
+            })
+        }        
+    }   
+}
 
 const renderUserProfile = (user) => {
 
@@ -231,7 +257,7 @@ const agencySideFetch = () => {
 
 const agencyPage = (pet) => {
 
-    let {name, species, breed, age, bio, image_url, available} = pet
+    let {name, species, breed, age, bio, image_url, id, available} = pet
 //this should be the hide and seek function but would persist on the screen and once button was clicked, would disappear
 
     // const addBtn = document.querySelector("#new-pet-btn")
@@ -262,7 +288,7 @@ const agencyPage = (pet) => {
     </form> `
     
     collection.innerHTML += 
-    `<div class="agency-card">
+    `<div class="agency-card" id=${id}>
     <h2>${name}</h2>
     <h4 id="species">${species}</h4>
     <h4 id="breed"> ${breed}</h4>
@@ -274,9 +300,21 @@ const agencyPage = (pet) => {
 
     const newPetForm = document.querySelector('#add-pet-form')
     newPetForm.addEventListener('submit', addNewPet)
+    
 
+    // create Buttons
+    // check if available === true
+    // if true evaluate to ""
+    // if false evaluete to approve addoption
+
+    // let btn = document.createElement('button')
+    //     btn.className = 'adopt-btn'
+    //     if(available === true){
+    //         btn.textContent = "Adopt Me!"
+    //         petAvatar.append(btn)
     //what info do we want to show on the agency side? Should style the cards differently so that it's obviously a different login
 }
+
 
 const addNewPet = (e) => {
     e.preventDefault()
