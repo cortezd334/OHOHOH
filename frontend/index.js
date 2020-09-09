@@ -5,11 +5,17 @@ const signup = document.getElementById('signup')
 signup.addEventListener('click', newAccount)
 const login = document.getElementById('login')
 login.addEventListener('click', userLogin)
+let logout = document.querySelector('#logout')
+logout.addEventListener('click', (e) => logUserOut(e))
 const alogin = document.getElementById('agencylogin')
 alogin.addEventListener('click', agencyLogin)
 const petFormContainer = document.querySelector(".container")
 const viewpets = document.getElementById('viewpets')
 viewpets.addEventListener('click', fetchGetPets)
+collection.addEventListener('click', (e) => assignPetToUser(e))
+
+// collection.addEventListener('click', (e) => deletePet(e))
+
 // const adoptButton = document.querySelector('.adopt-button')
 
 //collection.innerHTML = '' removes whatever keeps showing up on the page
@@ -50,6 +56,13 @@ function getUserId() {
         renderUserProfile(user)
     }
     }))
+}
+
+const logUserOut = (e) => {
+   console.log(e)
+   localStorage.clear()
+   collection.innerHTML  = 
+   `<h3> you have been successfully logged out</h3>`
 }
 
 fetchAgency()
@@ -116,7 +129,8 @@ const adoptPet = (e, pet) => {
         if (pet.id == id){
             pet.available = !pet.available
             
-            let data = {available: pet.available}
+            let data = {available: pet.available, user_id: localStorage.id, accept_adoption: false}
+
             fetch(`http://localhost:3000/pets/${id}`, {
                 method: 'PATCH',
                 headers: {
@@ -133,6 +147,11 @@ const adoptPet = (e, pet) => {
         }        
     }   
 }
+
+// const deletePet = e => {
+//     collection.querySelector
+    
+// }
 
 const renderUserProfile = (user) => {
 
@@ -264,29 +283,56 @@ const agencySideFetch = () => {
 
     fetch('http://localhost:3000/pets')
     .then(resp => resp.json())
-    .then(pets => pets.forEach(pet => agencyPage(pet)))
+    .then(pets => {
+        petFormContainer.innerHTML =
+        `<form id="add-pet-form">
+            <h3>Add a pet for adoption</h3> 
+            <input type="text" name="name" value="" placeholder="Enter pet's name..." class="input-text"/>
+            <br />
+            <input type="text" name="image" value="" placeholder="Enter pet's image URL..." class="input-text"/>
+            <br />
+            <input type="text" name="species" value="" placeholder="Enter species..." class="input-text"/>
+            <br />
+            <input type="integer" name="age" value="" placeholder="Enter age..." class="input-text"/>
+            <br />
+            <input type="text" name="bio" value="" placeholder="Enter pet description..." class="input-text"/>
+            <br />
+            <input type="submit" name="submit" value="Add Pet to Adoption List" class="submit"/>
+        </form> `
+
+        const newPetForm = document.querySelector('#add-pet-form')
+        newPetForm.addEventListener('submit', addNewPet)
+
+        pets.forEach(pet => agencyPage(pet))
+    })
 }
+
+function assignPetToUser(e) {
+    if ( e.target.matches('.approve-adoption-btn')){
+        id = e.target.id
+        id = id.split("-")
+    
+        fetch(`http://localhost:3000/pets/${id[1]}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({accept_adoption: true})
+        })
+        .then(res => res.json())
+        .then(console.log)
+        // .then(json => renderUserProfile(json))
+    }
+}
+
+
+
 
 const agencyPage = (pet) => {
 
     let {name, species, breed, age, bio, image_url, id, available} = pet
 
-    petFormContainer.innerHTML =
-    `<form id="add-pet-form">
-        <h3>Add a pet for adoption</h3> 
-        <input type="text" name="name" value="" placeholder="Enter pet's name..." class="input-text"/>
-        <br />
-        <input type="text" name="image" value="" placeholder="Enter pet's image URL..." class="input-text"/>
-        <br />
-        <input type="text" name="species" value="" placeholder="Enter species..." class="input-text"/>
-        <br />
-        <input type="integer" name="age" value="" placeholder="Enter age..." class="input-text"/>
-        <br />
-        <input type="text" name="bio" value="" placeholder="Enter pet description..." class="input-text"/>
-        <br />
-        <input type="submit" name="submit" value="Add Pet to Adoption List" class="submit"/>
-    </form> `
-    
     collection.innerHTML += 
     `<div class="agency-card" id=${id}>
     <h2>${name}</h2>
@@ -296,24 +342,33 @@ const agencyPage = (pet) => {
     <p id="bio"> ${bio}</p>
     <img src=${image_url} class="pet-avatar" />
     <p id="available"></p>
+    <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
     </div>`
 
-    const newPetForm = document.querySelector('#add-pet-form')
-    newPetForm.addEventListener('submit', addNewPet)
+
     
 
     // create Buttons
     // check if available === true
     // if true evaluate to ""
     // if false evaluete to approve addoption
-
-    // let btn = document.createElement('button')
-    //     btn.className = 'adopt-btn'
-    //     if(available === true){
-    //         btn.textContent = "Adopt Me!"
-    //         petAvatar.append(btn)
+    let agencyCard = document.getElementById(`${id}`)
+    let btn = document.getElementById(`adpt-${id}`)
+    // btn.addEventListener('click', (e) => assignPetToUser(e))
+    // btn.addEventListener('click', (e) => deleteAdoptedPet)
+        // btn.className = 'approve-adoption-btn'
+        if(available === false){
+            // btn.textContent = "Approve Adoption"
+            // agencyCard.append(btn)
+            btn.style.display = 'block'
+        }
+        // console.log(btn)
+        
+        
     //what info do we want to show on the agency side? Should style the cards differently so that it's obviously a different login
 }
+
+
 
 
 const addNewPet = (e) => {
@@ -332,7 +387,7 @@ const addNewPet = (e) => {
         age: newPetAge,
         bio: newPetBio,
         available: true,
-        agency_id: 5
+        agency_id: 2
     }
 
     fetch('http://localhost:3000/pets', { 
@@ -397,6 +452,8 @@ function userLogin(e){
 
 let form = document.querySelector('form')
 form.addEventListener('submit', userLoggedIn)
+
+
 }
 
 const createUser = (e) => {
@@ -418,3 +475,4 @@ const createUser = (e) => {
     .then(res => res.json())
     .then(user => localStorage.setItem('id', user.id))
 }
+
