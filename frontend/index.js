@@ -156,6 +156,7 @@ const renderUserProfile = (user) => {
     let updateBtn = document.getElementById('update')
     updateBtn.addEventListener('click', (e) => updateForm(e, user))
     let deleteBtn = document.getElementById('delete')
+    deleteBtn.addEventListener('click', deleteUser)
 }
 
 const updateForm = (e, user) => {
@@ -214,6 +215,27 @@ const updateProfile = (e) => {
     })
     .then(res => res.json())
     .then(json => renderUserProfile(json))
+}
+
+const deleteUser = () => {
+
+    collection.innerHTML = ''
+    collection.innerHTML = `
+    <h3>Your Account Has Been Deleted</h3>
+    `
+    fetch(`http://localhost:3000/users/${localStorage.id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+        }
+    })
+    .then(res => res.json())
+    .then(json => {
+        localStorage.clear()
+        newAccount()
+    })
+
 }
 
 
