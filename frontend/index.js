@@ -14,6 +14,10 @@ const profile = document.getElementById('profile')
 profile.addEventListener('click', userLoggedIn)
 const viewpets = document.getElementById('viewpets')
 viewpets.addEventListener('click', fetchGetPets)
+const adoptable = document.getElementById('adoptable')
+adoptable.addEventListener('click', agencySideFetch)
+const adopted = document.getElementById('adopted')
+adopted.addEventListener('click', adoptedPets)
 const adoption = document.getElementById('viewadoption')
 adoption.addEventListener('click', adoptionStatus)
 collection.addEventListener('click', (e) => assignPetToUser(e))
@@ -78,6 +82,7 @@ const logUserOut = (e) => {
     alogin.style.display='block'
     signup.style.display='block'
     login.style.display='block'
+    profile.style.display='none'
     viewpets.style.display='none'
     adoption.style.display='none'
     logout.style.display='none'
@@ -111,14 +116,15 @@ const agencyInfo = (agency) => {
 
 const appendPet = (pet) => {
 
-    let {name, species, breed, age, bio, image_url, available, id} = pet
+    let {name, species, breed, age, bio, image_url, available, id, accept_adoption} = pet
     
     petFormContainer.innerHTML = ''
     
     let avail = available ? "" : "Pending Adoption"
 
-    
-    
+    if(available===false && accept_adoption===true){
+        console.log('hi')
+    }else {
     collection.innerHTML += 
         `<div class="card" id=${id}>
             <h2>${name}</h2>
@@ -142,6 +148,7 @@ const appendPet = (pet) => {
             petAvatar.append(btn)
         }
         collection.addEventListener('click', (e) => adoptPet(e, pet))
+    }
 }
 
 const adoptPet = (e, pet) => {
@@ -178,7 +185,6 @@ function adoptionStatus() {
 
     fetch(`http://localhost:3000/users/${localStorage.id}`)
     .then(res => res.json())
-    // .then(console.log)
     .then(json => json.pets.forEach(pet => {
 
         let adopt = pet.accept_adoption ? 'Congratulations, You are now a pet owner!' : 'We are reviewing your application. Check back in a few days.'
@@ -194,10 +200,6 @@ function adoptionStatus() {
             <p id='as-${pet.id}'>${adopt}</p>
         </div>` 
     }))
-    //fetch pets that belong to that user
-    //serializer user.pet
-    //display them to page
-    //accept_adoption? Congratulations! : Adoption Status pending
 }
 
 // const deletePet = e => {
@@ -322,19 +324,18 @@ function agencyLogin(){
         class='submit'/>
     </form>
     `
-        // <label>Password:</label>
-        // <input type='text' name='name' value='' placeholder='Enter Password' class='input-text'/>
-// add this to innerHTML when we add auth
-// debugger
 let form = document.querySelector('.user-form')
 form.addEventListener('submit', agencySideFetch)
 }
 
-const agencySideFetch = () => {
+function agencySideFetch() {
 
     alogin.style.display='none'
     signup.style.display='none'
+    profile.style.display='none'
     login.style.display='none'
+    adoptable.style.display='block'
+    adopted.style.display='block'
     logout.style.display='block'
 
     collection.innerHTML = ''
@@ -367,13 +368,22 @@ const agencySideFetch = () => {
     })
 }
 
+function adoptedPets() {
+    fetch(`http://localhost:3000/pets`)
+    .then(res => res.json())
+    .then(json => json.forEach(pet => adoptee(pet)))
+}
+
 function assignPetToUser(e) {
     if ( e.target.matches('.approve-adoption-btn')){
         id = e.target.id
-        console.log(id)
+        // let btn = document.getElementById(id)
+
         id = id.split("-")
-        console.log(id)
-    
+        
+        // btn.style.background = 'gray'
+        // btn.textContent = 'ADOPTED'
+
         fetch(`http://localhost:3000/pets/${id[1]}`, {
             method: 'PATCH',
             headers: {
@@ -383,30 +393,59 @@ function assignPetToUser(e) {
             body: JSON.stringify({accept_adoption: true})
         })
         .then(res => res.json())
-        .then(console.log)
-        // .then(json => adoptionStatus(json))
+        // .then(console.log)
+        .then(json => adoptee(json))
     }
 }
 
 const agencyPage = (pet) => {
 
-    let {name, species, breed, age, bio, image_url, id, available} = pet
+    let {name, species, breed, age, bio, image_url, id, available, accept_adoption} = pet
 
-    collection.innerHTML += 
-    `<div class="agency-card" id=${id}>
-    <h2>${name}</h2>
-    <h4 id="species">${species}</h4>
-    <h4 id="breed"> ${breed}</h4>
-    <p id="age"> ${age}</p>
-    <p id="bio"> ${bio}</p>
-    <img src=${image_url} class="pet-avatar" />
-    <p id="available"></p>
-    <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
-    </div>`
+    if(available===false && accept_adoption===true){
+        console.log('hi')
+    }else {
+        collection.innerHTML += 
+        `<div class="agency-card" id=${id}>
+        <h2>${name}</h2>
+        <h4 id="species">${species}</h4>
+        <h4 id="breed"> ${breed}</h4>
+        <p id="age"> ${age}</p>
+        <p id="bio"> ${bio}</p>
+        <img src=${image_url} class="pet-avatar" />
+        <p id="available"></p>
+        <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
+        </div>`
 
-    let btn = document.getElementById(`adpt-${id}`)
-    if(available === false){
-        btn.style.display = 'block'
+        let btn = document.getElementById(`adpt-${id}`)
+        if(available === false){
+            btn.style.display = 'block'
+        }
+    }
+}
+
+const adoptee = (pet) => {
+    console.log(pet)
+
+    petFormContainer.innerHTML = ''
+    collection.innerHTML = ''
+    collection.innerHTML = '<h2>Adoption File</h2>'
+
+    let {name, species, breed, age, bio, image_url, id, available, accept_adoption, user} = pet
+
+    if(available===false && accept_adoption===true){
+        console.log('are we getting here?')
+        collection.innerHTML += 
+        `<div class="agency-card" id=${id}>
+        <h2>${name}</h2>
+        <h4 id="species">Species: ${species}</h4>
+        <h4 id="breed">Breed: ${breed}</h4>
+        <p id="age">Age: ${age}</p>
+        <p>Adopter:</p>
+        <p id='user-info'>${user.name} - ${user.email}</p> 
+        <img src=${image_url} 
+        <p id="bio"> ${bio}</p>
+        </div>`
     }
 }
 
