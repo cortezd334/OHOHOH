@@ -1,17 +1,19 @@
 let addPet = false
 const collection = document.querySelector('#pet-collection')
 const header = document.getElementById('pet-header')
+const petFormContainer = document.querySelector(".container")
 const signup = document.getElementById('signup')
 signup.addEventListener('click', newAccount)
 const login = document.getElementById('login')
 login.addEventListener('click', userLogin)
-let logout = document.querySelector('#logout')
+const logout = document.querySelector('#logout')
 logout.addEventListener('click', (e) => logUserOut(e))
 const alogin = document.getElementById('agencylogin')
 alogin.addEventListener('click', agencyLogin)
-const petFormContainer = document.querySelector(".container")
 const viewpets = document.getElementById('viewpets')
 viewpets.addEventListener('click', fetchGetPets)
+const adoption = document.getElementById('viewadoption')
+adoption.addEventListener('click', adoptionStatus)
 collection.addEventListener('click', (e) => assignPetToUser(e))
 
 // collection.addEventListener('click', (e) => deletePet(e))
@@ -25,7 +27,7 @@ collection.addEventListener('click', (e) => assignPetToUser(e))
 function fetchAgency() {
     fetch('http://localhost:3000/agencies')
     .then(res => res.json())
-    .then(json => agencyInfo(json))
+    .then(json => json.map(agency => agencyInfo(agency)))
 }
 
 function fetchGetPets() {
@@ -38,6 +40,14 @@ function fetchGetPets() {
 
 function userLoggedIn(e){
     e.preventDefault()
+
+    alogin.style.display='none'
+    signup.style.display='none'
+    login.style.display='none'
+    viewpets.style.display='block'
+    adoption.style.display='block'
+    logout.style.display='block'
+
     localStorage.id? fetchUser() : localStorage.setItem('username', e.target.username.value), getUserId()
 }
 
@@ -148,6 +158,18 @@ const adoptPet = (e, pet) => {
     }   
 }
 
+function adoptionStatus() {
+
+    collection.innerHTML = `
+    <h2>My Pet Adoption Status</h2>
+    `
+    console.log('what do I do now')
+    //fetch pets that belong to that user
+    //serializer user.pet
+    //display them to page
+    //accept_adoption? Congratulations! : Adoption Status pending
+}
+
 // const deletePet = e => {
 //     collection.querySelector
     
@@ -238,10 +260,6 @@ const updateProfile = (e) => {
 
 const deleteUser = () => {
 
-    // collection.innerHTML = ''
-    // collection.innerHTML = `
-    // <h3>Your Account Has Been Deleted</h3>
-    // `
     fetch(`http://localhost:3000/users/${localStorage.id}`, {
         method: 'DELETE',
         headers: {
@@ -259,6 +277,7 @@ const deleteUser = () => {
 
 
 function agencyLogin(){
+
     petFormContainer.innerHTML = ''
     collection.innerHTML = ''
 
@@ -282,6 +301,11 @@ form.addEventListener('submit', agencySideFetch)
 }
 
 const agencySideFetch = () => {
+
+    alogin.style.display='none'
+    signup.style.display='none'
+    login.style.display='none'
+    logout.style.display='block'
 
     collection.innerHTML = ''
 
@@ -351,6 +375,7 @@ const agencyPage = (pet) => {
     <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
     </div>`
 
+<<<<<<< HEAD
     let agencyCard = document.getElementById(`${id}`)
     let btn = document.getElementById(`adpt-${id}`)
         if(available === false){
@@ -358,10 +383,13 @@ const agencyPage = (pet) => {
         }
         
     //what info do we want to show on the agency side? Should style the cards differently so that it's obviously a different login
+=======
+    let btn = document.getElementById(`adpt-${id}`)
+    if(available === false){
+        btn.style.display = 'block'
+    }
+>>>>>>> b4b53279454d8e40b69d3f788c046fde3ce92124
 }
-
-
-
 
 const addNewPet = (e) => {
     e.preventDefault()
