@@ -6,7 +6,7 @@ class PetsController < ApplicationController
     end
 
     def show
-        pet = Pet.find_by(params[:id])
+        pet = Pet.find(params[:id])
         render json: pet
     end
 
@@ -17,6 +17,7 @@ class PetsController < ApplicationController
     end
 
     def update
+        # debugger
         pet = Pet.find(params[:id])
         pet.update(pet_params)
         render json: pet
