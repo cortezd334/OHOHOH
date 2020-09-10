@@ -90,10 +90,12 @@ const agencyInfo = (agency) => {
 
     // let div = document.createElement('div')
     collection.innerHTML = `
+    <div class="agency-info"
     <h2>${name}</h2>
     <h4><i>Open Hands Open Hearts Open Home</i></h4>
     <h5>Established ${established}</h5>
     <p>${description}</p>
+    </div>
     `
     // collection.appendChild(div)
 }
@@ -356,9 +358,6 @@ function assignPetToUser(e) {
     }
 }
 
-
-
-
 const agencyPage = (pet) => {
 
     let {name, species, breed, age, bio, image_url, id, available} = pet
@@ -375,20 +374,10 @@ const agencyPage = (pet) => {
     <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
     </div>`
 
-<<<<<<< HEAD
-    let agencyCard = document.getElementById(`${id}`)
-    let btn = document.getElementById(`adpt-${id}`)
-        if(available === false){
-            btn.style.display = 'block'
-        }
-        
-    //what info do we want to show on the agency side? Should style the cards differently so that it's obviously a different login
-=======
     let btn = document.getElementById(`adpt-${id}`)
     if(available === false){
         btn.style.display = 'block'
     }
->>>>>>> b4b53279454d8e40b69d3f788c046fde3ce92124
 }
 
 const addNewPet = (e) => {

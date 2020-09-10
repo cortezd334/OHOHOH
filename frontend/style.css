@@ -18,12 +18,10 @@ body {
   
   #pet-header img {
     height: 6rem;
-    width: auto;
+    width: 12rem;
   }
   
-  /* #pet-collection {
-    margin: 2rem;
-  } */
+
   
   .card {
     text-align: center;
@@ -41,10 +39,6 @@ body {
  
   }
 
-
-
-
-  
   .pet-avatar {
     justify-self: center;
     height: 12rem;
@@ -111,3 +105,34 @@ body {
     font-family: monospace;
     margin: 1px;
   }
+
+
+    
+    .agency-info {
+      text-align: center;
+      font-size:150%;
+      /* border: grey solid 1px; */
+      /* padding: 1rem; */
+      width: 95%;
+      height: 60%;
+      display: inline-grid;
+      margin: 1rem 2rem;
+      border-radius: 10px;
+      /* box-shadow: 3px 4px #1976d2 */
+      /* box-shadow: 0px 2px 18px 0px rgba(0,0,0,0.7); */
+      /* box-shadow: 7px 10px 20px -4px rgba(0,0,0,0.75); */
+
+
+    }
+  
+#MyProfile {
+  /* text-align: justify; */
+      font-size:150%;
+      border: grey solid 1px;
+      padding: 1rem;
+      width: 95%;
+      height: 60%;
+      display: inline-grid;
+      margin: 1rem 2rem;
+      border-radius: 10px;
+} 
