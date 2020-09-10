@@ -131,7 +131,10 @@ const appendPet = (pet) => {
         
         let btn = document.createElement('button')
         btn.className = 'adopt-btn'
-        if(available === true){
+        if(available === false){
+            console.log('hi')
+        }
+        else{
             btn.textContent = "Adopt Me!"
             petAvatar.append(btn)
         }
@@ -139,7 +142,7 @@ const appendPet = (pet) => {
 }
 
 const adoptPet = (e, pet) => {
-    if(e.target.matches('button')){
+    if(e.target.matches('.adopt-btn')){
         let id = e.target.parentElement.id
         let availablity = e.target.previousElementSibling
         if (pet.id == id){
@@ -421,7 +424,6 @@ const addNewPet = (e) => {
         age: newPetAge,
         breed: newPetBreed,
         bio: newPetBio,
-        available: true,
         agency_id: 8
     }
 
