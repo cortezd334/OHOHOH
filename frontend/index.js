@@ -69,10 +69,19 @@ function getUserId() {
 }
 
 const logUserOut = (e) => {
-   console.log(e)
-   localStorage.clear()
-   collection.innerHTML  = 
-   `<h3> you have been successfully logged out</h3>`
+
+    petFormContainer.innerHTML = ''
+
+    alogin.style.display='block'
+    signup.style.display='block'
+    login.style.display='block'
+    viewpets.style.display='none'
+    adoption.style.display='none'
+    logout.style.display='none'
+
+    localStorage.clear()
+    collection.innerHTML  = 
+    `<h3> you have been successfully logged out</h3>`
 }
 
 fetchAgency()
@@ -88,7 +97,6 @@ const agencyInfo = (agency) => {
     title.textContent = `${name}`
     header.appendChild(title)
 
-    // let div = document.createElement('div')
     collection.innerHTML = `
     <div class="agency-info"
     <h2>${name}</h2>
@@ -97,7 +105,6 @@ const agencyInfo = (agency) => {
     <p>${description}</p>
     </div>
     `
-    // collection.appendChild(div)
 }
 
 
@@ -126,7 +133,10 @@ const appendPet = (pet) => {
         
         let btn = document.createElement('button')
         btn.className = 'adopt-btn'
-        if(available === true){
+        if(available === false){
+            console.log('hi')
+        }
+        else{
             btn.textContent = "Adopt Me!"
             petAvatar.append(btn)
         }
@@ -134,8 +144,7 @@ const appendPet = (pet) => {
 }
 
 const adoptPet = (e, pet) => {
-    if(e.target.matches('button')){
-        // console.log(pet)
+    if(e.target.matches('.adopt-btn')){
         let id = e.target.parentElement.id
         let availablity = e.target.previousElementSibling
         if (pet.id == id){
@@ -161,11 +170,29 @@ const adoptPet = (e, pet) => {
 }
 
 function adoptionStatus() {
+    collection.innerHTML = ''
 
     collection.innerHTML = `
-    <h2>My Pet Adoption Status</h2>
-    `
-    console.log('what do I do now')
+    <h2>My Pet Adoption Status</h2>`
+
+    fetch(`http://localhost:3000/users/${localStorage.id}`)
+    .then(res => res.json())
+    // .then(console.log)
+    .then(json => json.pets.forEach(pet => {
+
+        let adopt = pet.accept_adoption ? 'Congratulations, You are now a pet owner!' : 'We are reviewing your application. Check back in a few days.'
+
+        collection.innerHTML += `
+        <div class="card" id=${pet.id}>
+            <h2>${pet.name}</h2>
+            <h4 id="species">${pet.species}</h4>
+            <h4 id="breed"> ${pet.breed}</h4>
+            <p id="age"> ${pet.age}</p>
+            <p id="bio"> ${pet.bio}</p>
+            <img src=${pet.image_url} class="pet-avatar" />
+            <p id='as-${pet.id}'>${adopt}</p>
+        </div>` 
+    }))
     //fetch pets that belong to that user
     //serializer user.pet
     //display them to page
@@ -342,7 +369,9 @@ const agencySideFetch = () => {
 function assignPetToUser(e) {
     if ( e.target.matches('.approve-adoption-btn')){
         id = e.target.id
+        console.log(id)
         id = id.split("-")
+        console.log(id)
     
         fetch(`http://localhost:3000/pets/${id[1]}`, {
             method: 'PATCH',
@@ -354,7 +383,7 @@ function assignPetToUser(e) {
         })
         .then(res => res.json())
         .then(console.log)
-        // .then(json => renderUserProfile(json))
+        // .then(json => adoptionStatus(json))
     }
 }
 
@@ -397,8 +426,7 @@ const addNewPet = (e) => {
         age: newPetAge,
         breed: newPetBreed,
         bio: newPetBio,
-        available: true,
-        agency_id: 2
+        agency_id: 8
     }
 
     fetch('http://localhost:3000/pets', { 
@@ -410,7 +438,6 @@ const addNewPet = (e) => {
         body: JSON.stringify(newPetInfo)
     })
     .then(resp => resp.json())
-    // .then(console.log)
     .then(pet => {
         collection.innerHTML += 
         `<div class="agency-card" id=${pet.id}>
@@ -425,18 +452,6 @@ const addNewPet = (e) => {
         </div>`
     })
 }
-
-// collection.innerHTML += 
-// `<div class="agency-card" id=${id}>
-// <h2>${name}</h2>
-// <h4 id="species">${species}</h4>
-// <h4 id="breed"> ${breed}</h4>
-// <p id="age"> ${age}</p>
-// <p id="bio"> ${bio}</p>
-// <img src=${image_url} class="pet-avatar" />
-// <p id="available"></p>
-// <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
-// </div>`
 
 function newAccount() {
     petFormContainer.innerHTML = ''
@@ -454,12 +469,7 @@ function newAccount() {
         class='submit'/>
     </form>
         `
-        // <label>Password:</label>
-        // <input type='text' name='name' value='' placeholder='Create Password' class='input-text'/>
-// add this to innerHTML when we add auth
 
-//need to make a function call to render homepage
-// createUser()
 let form = document.getElementsByTagName('form')[0]
 form.addEventListener('submit', (e) => userLogin(e))
 form.addEventListener('submit', (e) => createUser(e))
@@ -480,15 +490,9 @@ function userLogin(e){
         class='submit'/>
     </form>
     `
-        // <label>Password:</label>
-        // <input type='text' name='name' value='' placeholder='Enter Password' class='input-text'/>
-// add this to innerHTML when we add auth
-// debugger
 
 let form = document.querySelector('form')
 form.addEventListener('submit', userLoggedIn)
-
-
 }
 
 const createUser = (e) => {
