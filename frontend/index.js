@@ -21,7 +21,6 @@ adopted.addEventListener('click', adoptedPets)
 const adoption = document.getElementById('viewadoption')
 adoption.addEventListener('click', adoptionStatus)
 collection.addEventListener('click', (e) => assignPetToUser(e))
-
 // collection.addEventListener('click', (e) => deletePet(e))
 
 // const adoptButton = document.querySelector('.adopt-button')
@@ -86,6 +85,8 @@ const logUserOut = (e) => {
     viewpets.style.display='none'
     adoption.style.display='none'
     logout.style.display='none'
+    adoptable.style.display='none'
+    adopted.style.display='none'
 
     localStorage.clear()
     collection.innerHTML  = 
@@ -93,9 +94,6 @@ const logUserOut = (e) => {
 }
 
 fetchAgency()
-// fetchGetPets()
-// fetchUser()
-
 
 const agencyInfo = (agency) => {
 
@@ -103,7 +101,7 @@ const agencyInfo = (agency) => {
 
     let title = document.createElement('h1')
     title.textContent = `${name}`
-    header.appendChild(title)
+    header.prepend(title)
 
     collection.innerHTML = `
     <div class="agency-info"
@@ -213,22 +211,6 @@ function renderUserProfile(user) {
 
     const {name, age, email, username, preference} = user
 
-    // collection.innerHTML = `
-    // <div id='MyProfile'>
-    //     <h2>${name}</h2>
-    //     <label>Username:</label>
-    //     <p>${username}</p>
-    //     <label>Email Address:</label>
-    //     <p>${email}</p>
-    //     <label>Age:</label>
-    //     <p>${age}</p>
-    //     <label>Which pet would you prefer to adopt:</label>
-    //     <p>${preference}</p>
-    //     <p><button id='update'>Update Profile</button> <button id='delete'>Delete Profile</button></p>
-    // </div>
-    // `
-
-
     collection.innerHTML = `
     <div id='MyProfile'>
         <h2>${name}</h2>
@@ -239,6 +221,8 @@ function renderUserProfile(user) {
         <p><button id='update'>Update Profile</button> <button id='delete'>Delete Profile</button></p>
     </div>
     `
+    //if able to get more species change Breed preference above to Animal preference
+
     let updateBtn = document.getElementById('update')
     updateBtn.addEventListener('click', (e) => updateForm(e, user))
     let deleteBtn = document.getElementById('delete')
@@ -271,13 +255,11 @@ const updateForm = (e, user) => {
         class='submit'/>
     </form>
     `
-    console.log(user)
     let form = document.querySelector('form')
     form.addEventListener('submit', (e) => updateProfile(e))
 }
 
 const updateProfile = (e) => {
-    console.log(e)
     e.preventDefault()
 
     const{name, username, email, age, preference} = e.target
@@ -289,7 +271,6 @@ const updateProfile = (e) => {
         age: age.value,
         preference: preference.value
     }
-    console.log(data)
 
     fetch(`http://localhost:3000/users/${localStorage.id}`, {
         method: 'PATCH',
@@ -317,9 +298,7 @@ const deleteUser = () => {
         localStorage.clear()
         newAccount()
     })
-
 }
-
 
 function agencyLogin(){
 
@@ -382,20 +361,37 @@ function agencySideFetch() {
 }
 
 function adoptedPets() {
+
+    collection.innerHTML = ''
+    collection.innerHTML = '<h2>Adopted Pets</h2>'
+    petFormContainer.innerHTML = ''
+
     fetch(`http://localhost:3000/pets`)
     .then(res => res.json())
-    .then(json => json.forEach(pet => adoptee(pet)))
+    .then(json => json.forEach(pet => {   
+
+    let {name, species, breed, age, bio, image_url, id, available, accept_adoption, user} = pet
+
+    if(available===false && accept_adoption===true){
+        collection.innerHTML += 
+        `<div class="agency-card" id=${id}>
+        <h2>${name}</h2>
+        <h4 id="species">Species: ${species}</h4>
+        <h4 id="breed">Breed: ${breed}</h4>
+        <p id="age">Age: ${age}</p>
+        <p>Adopter:</p>
+        <p id='user-info'>${user.name} - ${user.email}</p> 
+        <img src=${image_url} 
+        <p id="bio"> ${bio}</p>
+        </div>`
+    }
+    }))
 }
 
 function assignPetToUser(e) {
     if ( e.target.matches('.approve-adoption-btn')){
         id = e.target.id
-        // let btn = document.getElementById(id)
-
         id = id.split("-")
-        
-        // btn.style.background = 'gray'
-        // btn.textContent = 'ADOPTED'
 
         fetch(`http://localhost:3000/pets/${id[1]}`, {
             method: 'PATCH',
@@ -406,8 +402,24 @@ function assignPetToUser(e) {
             body: JSON.stringify({accept_adoption: true})
         })
         .then(res => res.json())
-        // .then(console.log)
         .then(json => adoptee(json))
+    } else if (e.target.matches('.deny-adoption-btn')){
+        id = e.target.id
+        id = id.split("-")
+        
+        e.target.previousElementSibling.remove()
+        e.target.remove()
+
+        fetch(`http://localhost:3000/pets/${id[1]}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({accept_adoption: false, available: true, user_id: null})
+        })
+        .then(res => res.json())
+        .then(json => agencySideFetch)
     }
 }
 
@@ -428,17 +440,20 @@ const agencyPage = (pet) => {
         <img src=${image_url} class="pet-avatar" />
         <p id="available"></p>
         <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
+        <button id='deny-${id}' class='deny-adoption-btn' style="display:none;"> Deny Adoption </button>
         </div>`
 
         let btn = document.getElementById(`adpt-${id}`)
+        let denyBtn = document.getElementById(`deny-${id}`)
+        
         if(available === false){
             btn.style.display = 'block'
+            denyBtn.style.display = 'block'
         }
     }
 }
 
 const adoptee = (pet) => {
-    console.log(pet)
 
     petFormContainer.innerHTML = ''
     collection.innerHTML = ''
@@ -447,7 +462,6 @@ const adoptee = (pet) => {
     let {name, species, breed, age, bio, image_url, id, available, accept_adoption, user} = pet
 
     if(available===false && accept_adoption===true){
-        console.log('are we getting here?')
         collection.innerHTML += 
         `<div class="agency-card" id=${id}>
         <h2>${name}</h2>
@@ -504,25 +518,10 @@ const addNewPet = (e) => {
             <img src=${pet.image_url} class="pet-avatar" />
             <p id="available"></p>
             <button id='adpt-${pet.id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
+            <button id='deny-${pet.id}' class='deny-adoption-btn' style="display:none;"> Deny Adoption </button>
         </div>`
     })
 }
-
-// `<div class="agency-card" id=${id}>
-        
-    
-//         <div class="agency-pet-card"
-//         <h2><b>${name}</b></h2>
-//         <h4 id="species">${species}</h4>
-//         <h4 id="breed"> ${breed}</h4>
-//         <p id="age"> ${age} years old </p>
-//         <p id="bio"> ${bio}</p>
-//         </div>
-
-//     <img src=${image_url} class="pet-avatar" />
-//     <p id="available"></p>
-//     <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
-//     </div>`
 
 function newAccount() {
     petFormContainer.innerHTML = ''
