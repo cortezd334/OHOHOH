@@ -10,6 +10,8 @@ const logout = document.querySelector('#logout')
 logout.addEventListener('click', (e) => logUserOut(e))
 const alogin = document.getElementById('agencylogin')
 alogin.addEventListener('click', agencyLogin)
+const profile = document.getElementById('profile')
+profile.addEventListener('click', userLoggedIn)
 const viewpets = document.getElementById('viewpets')
 viewpets.addEventListener('click', fetchGetPets)
 const adoption = document.getElementById('viewadoption')
@@ -44,6 +46,7 @@ function userLoggedIn(e){
     alogin.style.display='none'
     signup.style.display='none'
     login.style.display='none'
+    profile.style.display='block'
     viewpets.style.display='block'
     adoption.style.display='block'
     logout.style.display='block'
@@ -202,7 +205,7 @@ function adoptionStatus() {
     
 // }
 
-const renderUserProfile = (user) => {
+function renderUserProfile(user) {
 
     const {name, age, email, username, preference} = user
 
