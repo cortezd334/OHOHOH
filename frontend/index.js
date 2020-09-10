@@ -208,19 +208,30 @@ const renderUserProfile = (user) => {
 
     const {name, age, email, username, preference} = user
 
+    // collection.innerHTML = `
+    // <div id='MyProfile'>
+    //     <h2>${name}</h2>
+    //     <label>Username:</label>
+    //     <p>${username}</p>
+    //     <label>Email Address:</label>
+    //     <p>${email}</p>
+    //     <label>Age:</label>
+    //     <p>${age}</p>
+    //     <label>Which pet would you prefer to adopt:</label>
+    //     <p>${preference}</p>
+    //     <p><button id='update'>Update Profile</button> <button id='delete'>Delete Profile</button></p>
+    // </div>
+    // `
+
+
     collection.innerHTML = `
     <div id='MyProfile'>
         <h2>${name}</h2>
-        <label>Username:</label>
-        <p>${username}</p>
-        <label>Email Address:</label>
-        <p>${email}</p>
-        <label>Age:</label>
-        <p>${age}</p>
-        <label>Which pet would you prefer to adopt:</label>
-        <p>${preference}</p>
-        <button id='update'>Update Profile</button>
-        <button id='delete'>Delete Profile</button>
+        <b>Username:</b> ${username}<br>
+        <b>Email Address:</b>${email}<br>
+        <b>Age:</b> ${age}<br>
+        <b>Breed preference:</b> ${preference}<br>
+        <p><button id='update'>Update Profile</button> <button id='delete'>Delete Profile</button></p>
     </div>
     `
     let updateBtn = document.getElementById('update')
@@ -393,11 +404,16 @@ const agencyPage = (pet) => {
 
     collection.innerHTML += 
     `<div class="agency-card" id=${id}>
-    <h2>${name}</h2>
-    <h4 id="species">${species}</h4>
-    <h4 id="breed"> ${breed}</h4>
-    <p id="age"> ${age}</p>
-    <p id="bio"> ${bio}</p>
+        
+    
+        <div class="agency-pet-card"
+        <h2><b>${name}</b></h2>
+        <h4 id="species">${species}</h4>
+        <h4 id="breed"> ${breed}</h4>
+        <p id="age"> ${age} years old </p>
+        <p id="bio"> ${bio}</p>
+        </div>
+
     <img src=${image_url} class="pet-avatar" />
     <p id="available"></p>
     <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
@@ -441,17 +457,35 @@ const addNewPet = (e) => {
     .then(pet => {
         collection.innerHTML += 
         `<div class="agency-card" id=${pet.id}>
-            <h2>${pet.name}</h2>
-            <h4 id="species">${pet.species}</h4>
-            <h4 id="breed"> ${pet.breed}</h4>
-            <p id="age"> ${pet.age}</p>
-            <p id="bio"> ${pet.bio}</p>
+            <div class="agency-pet-card"
+                <h2>${pet.name}</h2>
+                <h4 id="species">${pet.species}</h4>
+                <h4 id="breed"> ${pet.breed}</h4>
+                <p id="age"> ${pet.age}</p>
+                <p id="bio"> ${pet.bio}</p>
+            </div>
             <img src=${pet.image_url} class="pet-avatar" />
             <p id="available"></p>
             <button id='adpt-${pet.id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
         </div>`
     })
 }
+
+// `<div class="agency-card" id=${id}>
+        
+    
+//         <div class="agency-pet-card"
+//         <h2><b>${name}</b></h2>
+//         <h4 id="species">${species}</h4>
+//         <h4 id="breed"> ${breed}</h4>
+//         <p id="age"> ${age} years old </p>
+//         <p id="bio"> ${bio}</p>
+//         </div>
+
+//     <img src=${image_url} class="pet-avatar" />
+//     <p id="available"></p>
+//     <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
+//     </div>`
 
 function newAccount() {
     petFormContainer.innerHTML = ''
