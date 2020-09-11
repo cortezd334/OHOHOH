@@ -209,15 +209,19 @@ function renderUserProfile(user) {
 
     collection.innerHTML = `
     <div id='MyProfile'>
-        <h2>${name}</h2>
-        <b>Username:</b> ${username}<br>
-        <b>Email Address:</b>${email}<br>
-        <b>Age:</b> ${age}<br>
-        <b>Breed preference:</b> ${preference}<br>
+        <h2><b>${name}</b></h2>
+        <label><b>Username:</b></label>
+        <p><${username}</p>
+        <label><b>Email Address:</b></label>
+        <p>${email}</p>
+        <label><b>Age:</b></label>
+        <p>${age}</p>
+        <label><b>Which pet would you prefer to adopt:<b></label>
+        <p>${preference}</p>
         <p><button id='update'>Update Profile</button> <button id='delete'>Delete Profile</button></p>
     </div>
     `
-    //if able to get more species change Breed preference above to Animal preference
+
 
     let updateBtn = document.getElementById('update')
     updateBtn.addEventListener('click', (e) => updateForm(e, user))
