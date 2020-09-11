@@ -1,4 +1,3 @@
-let addPet = false
 const collection = document.querySelector('#pet-collection')
 const header = document.getElementById('pet-header')
 const petFormContainer = document.querySelector(".container")
@@ -34,6 +33,8 @@ function fetchAgency() {
 
 function fetchGetPets() {
     collection.innerHTML = ''
+    collection.innerHTML = `<div class='headings'>
+    <h1>Pets Available For Adoption</h1></div>`
 
     fetch('http://localhost:3000/pets')
     .then(resp => resp.json())
@@ -87,7 +88,7 @@ const logUserOut = (e) => {
 
     localStorage.clear()
     collection.innerHTML  = 
-    `<h3> you have been successfully logged out</h3>`
+    `<div class="headings"><h2> You Have Been Successfully Logged Out</h2></div>`
 }
 
 fetchAgency()
@@ -116,7 +117,7 @@ const appendPet = (pet) => {
     let {name, species, breed, age, bio, image_url, available, id, accept_adoption} = pet
     
     petFormContainer.innerHTML = ''
-    
+
     let avail = available ? "" : "Pending Adoption"
 
     if(accept_adoption!==true){
@@ -173,8 +174,8 @@ const adoptPet = (e, pet) => {
 function adoptionStatus() {
     collection.innerHTML = ''
 
-    collection.innerHTML = `
-    <h2>My Pet Adoption Status</h2>`
+    collection.innerHTML = `<div class='headings'>
+    <h1>My Pet Adoption Status</h1></div>`
 
     fetch(`http://localhost:3000/users/${localStorage.id}`)
     .then(res => res.json())
@@ -222,11 +223,9 @@ function renderUserProfile(user) {
 }
 
 const updateForm = (e, user) => {
-    // const {name, age, email, username, preference} = user
-    // is there a way we can pre-plot these?
-    //user will be available when we do
+
     collection.innerHTML = `
-    <div class='form-div'>
+    <div id='update-form'>
     <h2>Update Profile</h2>
     <form class='user-form'>
         <label>Name:</label>
@@ -247,12 +246,8 @@ const updateForm = (e, user) => {
         <input type='submit' name='submit' value='Update Profile'
         class='submit'/>
     </form>
-    <div class='form-div'>
+    </div>
     `
-    // let var = {
-    //     foo: 1,
-    //     bar: 2
-    //   };
     const {name, age, email, username, preference} = user
     let inputs = Array.prototype.slice.call(document.querySelectorAll('form input'));
       
@@ -370,8 +365,6 @@ function agencySideFetch() {
             <br />
             <input type="submit" name="submit" value="Add Pet to Adoption List" class="submit"/>
         </form>`
-        // <div class='form-div'>
-        // </div>`
 
         const newPetForm = document.querySelector('#add-pet-form')
         newPetForm.addEventListener('submit', addNewPet)
@@ -383,7 +376,7 @@ function agencySideFetch() {
 function adoptedPets() {
 
     collection.innerHTML = ''
-    collection.innerHTML = '<h2>Adopted Pets</h2>'
+    collection.innerHTML = '<div class="headings"><h1>Adopted Pets</h1></div>'
     petFormContainer.innerHTML = ''
 
     fetch(`http://localhost:3000/pets`)
@@ -401,8 +394,8 @@ function adoptedPets() {
         <p id="age">Age: ${age}</p>
         <p>Adopter:</p>
         <p id='user-info'>${user.name} - ${user.email}</p> 
-        <img src=${image_url} 
         <p id="bio"> ${bio}</p>
+        <img src=${image_url}>
         </div>`
     }
     }))
@@ -477,7 +470,7 @@ const adoptee = (pet) => {
 
     petFormContainer.innerHTML = ''
     collection.innerHTML = ''
-    collection.innerHTML = '<h2>Adoption File</h2>'
+    collection.innerHTML = '<div class="headings"><h1>Adoption File</h1></div>'
 
     let {name, species, breed, age, bio, image_url, id, available, accept_adoption, user} = pet
 
