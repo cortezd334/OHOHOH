@@ -444,15 +444,17 @@ const agencyPage = (pet) => {
     if(accept_adoption!==true){
         collection.innerHTML += 
         `<div class="agency-pet-card" id=${id}>
+        <div class="agency-pet-card-info">
         <h2>${name}</h2>
         <h4 id="species">${species}</h4>
         <h4 id="breed"> ${breed}</h4>
         <p id="age"> ${age}</p>
         <p id="bio"> ${bio}</p>
-        <img src=${image_url} class="pet-avatar" />
         <p id="available"></p>
-        <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
         <button id='deny-${id}' class='deny-adoption-btn' style="display:none;"> Deny Adoption </button>
+        <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
+        </div>
+        <img src=${image_url} class="pet-avatar" />
         </div>`
 
         let btn = document.getElementById(`adpt-${id}`)
@@ -476,13 +478,15 @@ const adoptee = (pet) => {
     if(available===false && accept_adoption===true){
         collection.innerHTML += 
         `<div class="agency-card" id=${id}>
+        <div class="agency-card-content">
         <h2>${name}</h2>
         <h4 id="species">Species: ${species}</h4>
         <h4 id="breed">Breed: ${breed}</h4>
         <p id="age">Age: ${age}</p>
         <p>Adopter:</p>
-        <p id='user-info'>${user.name} - ${user.email}</p> 
-        <img src=${image_url} 
+        <p id='user-info'>${user.name} - ${user.email}</p>
+        </div> 
+        <img src=${image_url} class="pet-avatar"/> 
         <p id="bio"> ${bio}</p>
         </div>`
     }
