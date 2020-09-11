@@ -103,7 +103,7 @@ const agencyInfo = (agency) => {
 
     let title = document.createElement('h1')
     title.textContent = `${name}`
-    header.appendChild(title)
+    header.prepend(title)
 
     collection.innerHTML = `
     <div class="agency-info"
@@ -213,32 +213,32 @@ function renderUserProfile(user) {
 
     const {name, age, email, username, preference} = user
 
-    // collection.innerHTML = `
-    // <div id='MyProfile'>
-    //     <h2>${name}</h2>
-    //     <label>Username:</label>
-    //     <p>${username}</p>
-    //     <label>Email Address:</label>
-    //     <p>${email}</p>
-    //     <label>Age:</label>
-    //     <p>${age}</p>
-    //     <label>Which pet would you prefer to adopt:</label>
-    //     <p>${preference}</p>
-    //     <p><button id='update'>Update Profile</button> <button id='delete'>Delete Profile</button></p>
-    // </div>
-    // `
-
-
     collection.innerHTML = `
     <div id='MyProfile'>
-        <h2>${name}</h2>
-        <b>Username:</b> ${username}<br>
-        <b>Email Address:</b>${email}<br>
-        <b>Age:</b> ${age}<br>
-        <b>Breed preference:</b> ${preference}<br>
+        <h2><b>${name}</b></h2>
+        <label><b>Username:</b></label>
+        <p><${username}</p>
+        <label><b>Email Address:</b></label>
+        <p>${email}</p>
+        <label><b>Age:</b></label>
+        <p>${age}</p>
+        <label><b>Which pet would you prefer to adopt:<b></label>
+        <p>${preference}</p>
         <p><button id='update'>Update Profile</button> <button id='delete'>Delete Profile</button></p>
     </div>
     `
+
+
+    // collection.innerHTML = `
+    // <div id='MyProfile'>
+    //     <h2>${name}</h2>
+    //     <b>Username:</b> ${username}<br>
+    //     <b>Email Address:</b>${email}<br>
+    //     <b>Age:</b> ${age}<br>
+    //     <b>Breed preference:</b> ${preference}<br>
+    //     <p><button id='update'>Update Profile</button> <button id='delete'>Delete Profile</button></p>
+    // </div>
+    // `
     let updateBtn = document.getElementById('update')
     updateBtn.addEventListener('click', (e) => updateForm(e, user))
     let deleteBtn = document.getElementById('delete')
