@@ -274,6 +274,26 @@ margin: 1px;
   margin-right: auto;
 }
 
+#update-form {
+  display: flex;
+  text-align: center;
+  border: grey solid 1px;
+  background: #417db9;
+  opacity: .95; 
+  padding: 1rem;
+  width: 45rem;
+  height: 25rem;
+  display: inline-grid;
+  margin: 5rem 2rem 2rem 1rem;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 7px 10px 20px -4px rgba(0,0,0,0.75);
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
 h1{
   font-size: 45px;
   margin: 1rem 1rem 2rem 7rem;
@@ -304,4 +324,12 @@ label{
 
 p{
   font-size: 20px;
+}
+
+.headings{
+  font-size: 40px;
+  background: white;
+  opacity: .95; 
+  width: fit-content;
+  margin: auto;
 }
