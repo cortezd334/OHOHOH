@@ -247,6 +247,18 @@ const updateForm = (e, user) => {
         class='submit'/>
     </form>
     `
+    // let var = {
+    //     foo: 1,
+    //     bar: 2
+    //   };
+    const {name, age, email, username, preference} = user
+    let inputs = Array.prototype.slice.call(document.querySelectorAll('form input'));
+      
+    Object.keys(user).map(function (userItem) {
+        inputs.map(function (inputItem) {
+          return (inputItem.name === userItem) ? (inputItem.value = user[userItem]) : false;
+        });
+      });
     let form = document.querySelector('form')
     form.addEventListener('submit', (e) => updateProfile(e))
 }
@@ -278,6 +290,16 @@ const updateProfile = (e) => {
 
 const deleteUser = () => {
 
+    alogin.style.display='block'
+    signup.style.display='block'
+    login.style.display='block'
+    profile.style.display='none'
+    viewpets.style.display='none'
+    adoption.style.display='none'
+    logout.style.display='none'
+    adoptable.style.display='none'
+    adopted.style.display='none'
+    
     fetch(`http://localhost:3000/users/${localStorage.id}`, {
         method: 'DELETE',
         headers: {
