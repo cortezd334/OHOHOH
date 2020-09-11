@@ -21,9 +21,6 @@ adopted.addEventListener('click', adoptedPets)
 const adoption = document.getElementById('viewadoption')
 adoption.addEventListener('click', adoptionStatus)
 collection.addEventListener('click', (e) => assignPetToUser(e))
-// collection.addEventListener('click', (e) => deletePet(e))
-
-// const adoptButton = document.querySelector('.adopt-button')
 
 //collection.innerHTML = '' removes whatever keeps showing up on the page
 //petFormContainer.innerHTML = '' removes the make a new pet form
@@ -122,7 +119,7 @@ const appendPet = (pet) => {
     
     let avail = available ? "" : "Pending Adoption"
 
-    if(available!==false && accept_adoption!==true){
+    if(accept_adoption!==true){
         collection.innerHTML += 
         `<div class="card" id=${id}>
             <h2>${name}</h2>
@@ -197,11 +194,6 @@ function adoptionStatus() {
         </div>` 
     }))
 }
-
-// const deletePet = e => {
-//     collection.querySelector
-    
-// }
 
 function renderUserProfile(user) {
 
