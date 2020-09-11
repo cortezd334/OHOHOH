@@ -21,9 +21,6 @@ adopted.addEventListener('click', adoptedPets)
 const adoption = document.getElementById('viewadoption')
 adoption.addEventListener('click', adoptionStatus)
 collection.addEventListener('click', (e) => assignPetToUser(e))
-// collection.addEventListener('click', (e) => deletePet(e))
-
-// const adoptButton = document.querySelector('.adopt-button')
 
 //collection.innerHTML = '' removes whatever keeps showing up on the page
 //petFormContainer.innerHTML = '' removes the make a new pet form
@@ -122,10 +119,8 @@ const appendPet = (pet) => {
     
     let avail = available ? "" : "Pending Adoption"
 
-    if(available===false && accept_adoption===true){
-        console.log('hi')
-    }else {
-    collection.innerHTML += 
+    if(accept_adoption!==true){
+        collection.innerHTML += 
         `<div class="card" id=${id}>
             <h2>${name}</h2>
             <h4 id="species">${species}</h4>
@@ -140,10 +135,8 @@ const appendPet = (pet) => {
         
         let btn = document.createElement('button')
         btn.className = 'adopt-btn'
-        if(available === false){
-            console.log('hi')
-        }
-        else{
+
+        if(available !== false){
             btn.textContent = "Adopt Me!"
             petAvatar.append(btn)
         }
@@ -201,11 +194,6 @@ function adoptionStatus() {
         </div>` 
     }))
 }
-
-// const deletePet = e => {
-//     collection.querySelector
-    
-// }
 
 function renderUserProfile(user) {
 
@@ -431,9 +419,7 @@ const agencyPage = (pet) => {
 
     let {name, species, breed, age, bio, image_url, id, available, accept_adoption} = pet
 
-    if(available===false && accept_adoption===true){
-        console.log('hi')
-    }else {
+    if(accept_adoption!==true){
         collection.innerHTML += 
         `<div class="agency-pet-card" id=${id}>
         <h2>${name}</h2>
@@ -588,4 +574,3 @@ const createUser = (e) => {
     .then(res => res.json())
     .then(user => localStorage.setItem('id', user.id))
 }
-
