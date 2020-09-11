@@ -215,12 +215,12 @@ function renderUserProfile(user) {
     <div id='MyProfile'>
         <h2><b>${name}</b></h2>
         <label><b>Username:</b></label>
-        <p><${username}</p>
+        <p>${username}</p>
         <label><b>Email Address:</b></label>
         <p>${email}</p>
         <label><b>Age:</b></label>
         <p>${age}</p>
-        <label><b>Which pet would you prefer to adopt:<b></label>
+        <label><b>Which pet would you prefer to adopt:</b></label>
         <p>${preference}</p>
         <p><button id='update'>Update Profile</button> <button id='delete'>Delete Profile</button></p>
     </div>
@@ -436,15 +436,17 @@ const agencyPage = (pet) => {
     }else {
         collection.innerHTML += 
         `<div class="agency-pet-card" id=${id}>
+        <div class="agency-pet-card-info">
         <h2>${name}</h2>
         <h4 id="species">${species}</h4>
         <h4 id="breed"> ${breed}</h4>
         <p id="age"> ${age}</p>
         <p id="bio"> ${bio}</p>
-        <img src=${image_url} class="pet-avatar" />
         <p id="available"></p>
-        <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
         <button id='deny-${id}' class='deny-adoption-btn' style="display:none;"> Deny Adoption </button>
+        <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
+        </div>
+        <img src=${image_url} class="pet-avatar" />
         </div>`
 
         let btn = document.getElementById(`adpt-${id}`)
@@ -468,13 +470,15 @@ const adoptee = (pet) => {
     if(available===false && accept_adoption===true){
         collection.innerHTML += 
         `<div class="agency-card" id=${id}>
+        <div class="agency-card-content">
         <h2>${name}</h2>
         <h4 id="species">Species: ${species}</h4>
         <h4 id="breed">Breed: ${breed}</h4>
         <p id="age">Age: ${age}</p>
         <p>Adopter:</p>
-        <p id='user-info'>${user.name} - ${user.email}</p> 
-        <img src=${image_url} 
+        <p id='user-info'>${user.name} - ${user.email}</p>
+        </div> 
+        <img src=${image_url} class="pet-avatar"/> 
         <p id="bio"> ${bio}</p>
         </div>`
     }
