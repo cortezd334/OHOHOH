@@ -1,4 +1,3 @@
-let addPet = false
 const collection = document.querySelector('#pet-collection')
 const header = document.getElementById('pet-header')
 const petFormContainer = document.querySelector(".container")
@@ -393,16 +392,17 @@ function adoptedPets() {
     let {name, species, breed, age, bio, image_url, id, available, accept_adoption, user} = pet
 
     if(available===false && accept_adoption===true){
-        collection.innerHTML += 
+        collection.innerHTML +=
         `<div class="agency-card" id=${id}>
-        <h2>${name}</h2>
-        <h4 id="species">Species: ${species}</h4>
-        <h4 id="breed">Breed: ${breed}</h4>
-        <p id="age">Age: ${age}</p>
-        <p>Adopter:</p>
-        <p id='user-info'>${user.name} - ${user.email}</p> 
-        <img src=${image_url} 
-        <p id="bio"> ${bio}</p>
+            <div class="agency-card-info">
+            <h2>${name}</h2>
+            <h4 id="species">Species: ${species}</h4>
+            <h4 id="breed">Breed: ${breed}</h4>
+            <h4 id="age">Age: ${age}</h4>
+            <h4 id='user-info'> Proud owner: ${user.name} </h4>
+            <h4>Email: ${user.email}</h4>
+            </div>
+            <img src=${image_url}>
         </div>`
     }
     }))
@@ -484,16 +484,14 @@ const adoptee = (pet) => {
     if(available===false && accept_adoption===true){
         collection.innerHTML += 
         `<div class="agency-card" id=${id}>
-        <div class="agency-card-content">
         <h2>${name}</h2>
         <h4 id="species">Species: ${species}</h4>
         <h4 id="breed">Breed: ${breed}</h4>
         <p id="age">Age: ${age}</p>
         <p>Adopter:</p>
         <p id='user-info'>${user.name} - ${user.email}</p>
-        </div> 
-        <img src=${image_url} class="pet-avatar"/> 
         <p id="bio"> ${bio}</p>
+        <img src=${image_url} class="pet-avatar"/> 
         </div>`
     }
 }
@@ -530,7 +528,7 @@ const addNewPet = (e) => {
     .then(pet => {
         collection.innerHTML += 
         `<div class="agency-card" id=${pet.id}>
-            <div class="agency-pet-card"
+            <div class="agency-pet-card">
                 <h2>${pet.name}</h2>
                 <h4 id="species">${pet.species}</h4>
                 <h4 id="breed"> ${pet.breed}</h4>
