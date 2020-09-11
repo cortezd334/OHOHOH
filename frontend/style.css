@@ -6,7 +6,6 @@ body {
   max-width: 1100px;
   margin: 0 auto;
 }
-  
 
 .card {
   display: flex;
@@ -23,8 +22,8 @@ body {
   border-radius: 10px;
   box-shadow: 7px 10px 20px -4px rgba(0,0,0,0.75);
   /* margin: 3% -5% 3% 16%; */
+  /* transform: translate3D(0,-1px,0) scale(2); */
 }
-
 
 #pet-header {
   display: flex;
@@ -148,21 +147,21 @@ margin: 1px;
 }
    
 .agency-info {
-    display: flex;
-    text-align: center;
-    font-size:150%;
-    border: grey solid 1px;
-    background: #417db9;
-    opacity: .95;
-    padding: 1rem;
-    width: 95%;
-    height: 60%;
-    display: inline-grid;
-    margin: 5rem;
-    border-radius: 10px;
-    box-shadow: 3px 4px #1976d2;
-    margin-left: auto;
-    margin-right: auto;
+  display: flex;
+  text-align: center;
+  font-size:150%;
+  border: grey solid 1px;
+  background: #417db9;
+  opacity: .95;
+  padding: 1rem;
+  width: 95%;
+  height: 60%;
+  display: inline-grid;
+  margin: 5rem;
+  border-radius: 10px;
+  box-shadow: 3px 4px #1976d2;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .agency-pet-card{
@@ -293,6 +292,26 @@ margin: 1px;
   margin-right: auto;
 }
 
+#update-form {
+  display: flex;
+  text-align: center;
+  border: grey solid 1px;
+  background: #417db9;
+  opacity: .95; 
+  padding: 1rem;
+  width: 45rem;
+  height: 25rem;
+  display: inline-grid;
+  margin: 5rem 2rem 2rem 1rem;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 7px 10px 20px -4px rgba(0,0,0,0.75);
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
 h1{
   font-size: 45px;
   margin: 1rem 1rem 2rem 7rem;
@@ -323,4 +342,12 @@ label{
 
 p{
   font-size: 20px;
+}
+
+.headings{
+  font-size: 40px;
+  background: white;
+  opacity: .95; 
+  width: fit-content;
+  margin: auto;
 }
