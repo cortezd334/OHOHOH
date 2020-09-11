@@ -439,9 +439,10 @@ function assignPetToUser(e) {
 
 const agencyPage = (pet) => {
 
-    let {name, species, breed, age, bio, image_url, id, available, accept_adoption} = pet
+    let {name, species, breed, age, bio, image_url, id, available, accept_adoption, user} = pet
 
-    if(accept_adoption!==true){
+
+    if (accept_adoption!==true && pet.user !== null){
         collection.innerHTML += 
         `<div class="agency-pet-card" id=${id}>
         <div class="agency-pet-card-info">
@@ -450,7 +451,8 @@ const agencyPage = (pet) => {
         <h4 id="breed"> ${breed}</h4>
         <p id="age"> ${age}</p>
         <p id="bio"> ${bio}</p>
-        <p id="available"></p>
+        <p id="user">Possible Adopter: ${user.name}</p>
+        <p id="contact">Contact: ${user.email}</p>
         <button id='deny-${id}' class='deny-adoption-btn' style="display:none;"> Deny Adoption </button>
         <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
         </div>
@@ -464,7 +466,29 @@ const agencyPage = (pet) => {
             btn.style.display = 'block'
             denyBtn.style.display = 'block'
         }
-    }
+    } else if(accept_adoption!==true){
+        collection.innerHTML += 
+        `<div class="agency-pet-card" id=${id}>
+        <div class="agency-pet-card-info">
+        <h2>${name}</h2>
+        <h4 id="species">${species}</h4>
+        <h4 id="breed"> ${breed}</h4>
+        <p id="age"> ${age}</p>
+        <p id="bio"> ${bio}</p>
+        <button id='deny-${id}' class='deny-adoption-btn' style="display:none;"> Deny Adoption </button>
+        <button id='adpt-${id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
+        </div>
+        <img src=${image_url} class="pet-avatar" />
+        </div>`
+
+        let btn = document.getElementById(`adpt-${id}`)
+        let denyBtn = document.getElementById(`deny-${id}`)
+        
+        if(available === false){
+            btn.style.display = 'block'
+            denyBtn.style.display = 'block'
+        }
+    } 
 }
 
 const adoptee = (pet) => {
@@ -478,14 +502,15 @@ const adoptee = (pet) => {
     if(available===false && accept_adoption===true){
         collection.innerHTML += 
         `<div class="agency-card" id=${id}>
-        <h2>${name}</h2>
-        <h4 id="species">Species: ${species}</h4>
-        <h4 id="breed">Breed: ${breed}</h4>
-        <p id="age">Age: ${age}</p>
-        <p>Adopter:</p>
-        <p id='user-info'>${user.name} - ${user.email}</p>
-        <p id="bio"> ${bio}</p>
-        <img src=${image_url} class="pet-avatar"/> 
+            <div class="agency-card-info">
+            <h2>${name}</h2>
+            <h4 id="species">Species: ${species}</h4>
+            <h4 id="breed">Breed: ${breed}</h4>
+            <h4 id="age">Age: ${age}</h4>
+            <h4 id='user-info'> Proud owner: ${user.name} </h4>
+            <h4>Email: ${user.email}</h4>
+            </div>
+            <img src=${image_url}>
         </div>`
     }
 }
@@ -507,7 +532,7 @@ const addNewPet = (e) => {
         age: newPetAge,
         breed: newPetBreed,
         bio: newPetBio,
-        agency_id: 8
+        agency_id: 12
     }
 
     fetch('http://localhost:3000/pets', { 
@@ -522,19 +547,19 @@ const addNewPet = (e) => {
     .then(pet => {
         collection.innerHTML += 
         `<div class="agency-card" id=${pet.id}>
-            <div class="agency-pet-card">
+            <div>
                 <h2>${pet.name}</h2>
                 <h4 id="species">${pet.species}</h4>
                 <h4 id="breed"> ${pet.breed}</h4>
                 <p id="age"> ${pet.age}</p>
                 <p id="bio"> ${pet.bio}</p>
+                <button id='adpt-${pet.id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
+                <button id='deny-${pet.id}' class='deny-adoption-btn' style="display:none;"> Deny Adoption </button>
             </div>
             <img src=${pet.image_url} class="pet-avatar" />
-            <p id="available"></p>
-            <button id='adpt-${pet.id}' class='approve-adoption-btn' style="display:none;"> Approve Adoption </button>
-            <button id='deny-${pet.id}' class='deny-adoption-btn' style="display:none;"> Deny Adoption </button>
         </div>`
     })
+    // <div class="agency-pet-card">
 }
 
 function newAccount() {
