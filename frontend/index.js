@@ -21,9 +21,6 @@ adopted.addEventListener('click', adoptedPets)
 const adoption = document.getElementById('viewadoption')
 adoption.addEventListener('click', adoptionStatus)
 collection.addEventListener('click', (e) => assignPetToUser(e))
-// collection.addEventListener('click', (e) => deletePet(e))
-
-// const adoptButton = document.querySelector('.adopt-button')
 
 //collection.innerHTML = '' removes whatever keeps showing up on the page
 //petFormContainer.innerHTML = '' removes the make a new pet form
@@ -122,10 +119,8 @@ const appendPet = (pet) => {
     
     let avail = available ? "" : "Pending Adoption"
 
-    if(available===false && accept_adoption===true){
-        console.log('hi')
-    }else {
-    collection.innerHTML += 
+    if(accept_adoption!==true){
+        collection.innerHTML += 
         `<div class="card" id=${id}>
             <h2>${name}</h2>
             <h4 id="species">${species}</h4>
@@ -140,10 +135,8 @@ const appendPet = (pet) => {
         
         let btn = document.createElement('button')
         btn.className = 'adopt-btn'
-        if(available === false){
-            console.log('hi')
-        }
-        else{
+
+        if(available !== false){
             btn.textContent = "Adopt Me!"
             petAvatar.append(btn)
         }
@@ -202,11 +195,6 @@ function adoptionStatus() {
     }))
 }
 
-// const deletePet = e => {
-//     collection.querySelector
-    
-// }
-
 function renderUserProfile(user) {
 
     const {name, age, email, username, preference} = user
@@ -259,6 +247,18 @@ const updateForm = (e, user) => {
         class='submit'/>
     </form>
     `
+    // let var = {
+    //     foo: 1,
+    //     bar: 2
+    //   };
+    const {name, age, email, username, preference} = user
+    let inputs = Array.prototype.slice.call(document.querySelectorAll('form input'));
+      
+    Object.keys(user).map(function (userItem) {
+        inputs.map(function (inputItem) {
+          return (inputItem.name === userItem) ? (inputItem.value = user[userItem]) : false;
+        });
+      });
     let form = document.querySelector('form')
     form.addEventListener('submit', (e) => updateProfile(e))
 }
@@ -290,6 +290,16 @@ const updateProfile = (e) => {
 
 const deleteUser = () => {
 
+    alogin.style.display='block'
+    signup.style.display='block'
+    login.style.display='block'
+    profile.style.display='none'
+    viewpets.style.display='none'
+    adoption.style.display='none'
+    logout.style.display='none'
+    adoptable.style.display='none'
+    adopted.style.display='none'
+    
     fetch(`http://localhost:3000/users/${localStorage.id}`, {
         method: 'DELETE',
         headers: {
@@ -431,9 +441,7 @@ const agencyPage = (pet) => {
 
     let {name, species, breed, age, bio, image_url, id, available, accept_adoption} = pet
 
-    if(available===false && accept_adoption===true){
-        console.log('hi')
-    }else {
+    if(accept_adoption!==true){
         collection.innerHTML += 
         `<div class="agency-pet-card" id=${id}>
         <div class="agency-pet-card-info">
@@ -592,4 +600,3 @@ const createUser = (e) => {
     .then(res => res.json())
     .then(user => localStorage.setItem('id', user.id))
 }
-
