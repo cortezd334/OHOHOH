@@ -122,10 +122,8 @@ const appendPet = (pet) => {
     
     let avail = available ? "" : "Pending Adoption"
 
-    if(available===false && accept_adoption===true){
-        console.log('hi')
-    }else {
-    collection.innerHTML += 
+    if(available!==false && accept_adoption!==true){
+        collection.innerHTML += 
         `<div class="card" id=${id}>
             <h2>${name}</h2>
             <h4 id="species">${species}</h4>
@@ -140,10 +138,8 @@ const appendPet = (pet) => {
         
         let btn = document.createElement('button')
         btn.className = 'adopt-btn'
-        if(available === false){
-            console.log('hi')
-        }
-        else{
+
+        if(available !== false){
             btn.textContent = "Adopt Me!"
             petAvatar.append(btn)
         }
@@ -427,9 +423,7 @@ const agencyPage = (pet) => {
 
     let {name, species, breed, age, bio, image_url, id, available, accept_adoption} = pet
 
-    if(available===false && accept_adoption===true){
-        console.log('hi')
-    }else {
+    if(accept_adoption!==true){
         collection.innerHTML += 
         `<div class="agency-pet-card" id=${id}>
         <h2>${name}</h2>
@@ -584,4 +578,3 @@ const createUser = (e) => {
     .then(res => res.json())
     .then(user => localStorage.setItem('id', user.id))
 }
-
