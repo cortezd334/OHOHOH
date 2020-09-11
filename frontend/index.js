@@ -200,7 +200,7 @@ function renderUserProfile(user) {
     const {name, age, email, username, preference} = user
 
     collection.innerHTML = `
-    <div id='MyProfile'>
+    <div id='myProfile'>
         <h2><b>${name}</b></h2>
         <label><b>Username:</b></label>
         <p>${username}</p>
@@ -225,8 +225,9 @@ const updateForm = (e, user) => {
     // const {name, age, email, username, preference} = user
     // is there a way we can pre-plot these?
     //user will be available when we do
-    collection.innerHTML =`
-    <h4>Update Profile</h4>
+    collection.innerHTML = `
+    <div class='form-div'>
+    <h2>Update Profile</h2>
     <form class='user-form'>
         <label>Name:</label>
         <input type='text' name='name' value='' placeholder='Enter Name Here' class='input-text'/>
@@ -246,6 +247,7 @@ const updateForm = (e, user) => {
         <input type='submit' name='submit' value='Update Profile'
         class='submit'/>
     </form>
+    <div class='form-div'>
     `
     // let var = {
     //     foo: 1,
@@ -320,8 +322,9 @@ function agencyLogin(){
     collection.innerHTML = ''
 
     collection.innerHTML =`
+    <div class='form-div'>
     <h2>Employee Log In</h2>
-    <h4>Enter Username and Password</h4>
+    <h4>Enter Username</h4>
     <form class='user-form'>
         <label>Username:</label>
         <input type='text' name='username' value='' placeholder='Enter Username Here' class='input-text'/>
@@ -329,6 +332,7 @@ function agencyLogin(){
         <input type='submit' name='submit' value='Log In'
         class='submit'/>
     </form>
+    </div>
     `
 let form = document.querySelector('.user-form')
 form.addEventListener('submit', agencySideFetch)
@@ -349,8 +353,8 @@ function agencySideFetch() {
     fetch('http://localhost:3000/pets')
     .then(resp => resp.json())
     .then(pets => {
-        petFormContainer.innerHTML =
-        `<form id="add-pet-form">
+        petFormContainer.innerHTML =`
+        <form id="add-pet-form">
             <h3>Add a pet for adoption</h3> 
             <input type="text" name="name" value="" placeholder="Enter pet's name..." class="input-text"/>
             <br />
@@ -365,7 +369,9 @@ function agencySideFetch() {
             <input type="text" name="bio" value="" placeholder="Enter pet description..." class="input-text"/>
             <br />
             <input type="submit" name="submit" value="Add Pet to Adoption List" class="submit"/>
-        </form> `
+        </form>`
+        // <div class='form-div'>
+        // </div>`
 
         const newPetForm = document.querySelector('#add-pet-form')
         newPetForm.addEventListener('submit', addNewPet)
@@ -542,6 +548,7 @@ const addNewPet = (e) => {
 function newAccount() {
     petFormContainer.innerHTML = ''
     collection.innerHTML =`
+    <div class='form-div'>
     <h2>Welcome to OHOHOH!</h2>
     <h4>Create an Account</h4>
     <form class='user-form'>
@@ -554,6 +561,7 @@ function newAccount() {
         <input type='submit' name='submit' value='Create Account'
         class='submit'/>
     </form>
+    </div>
         `
 
 let form = document.getElementsByTagName('form')[0]
@@ -566,6 +574,7 @@ function userLogin(e){
 
     petFormContainer.innerHTML = ''
     collection.innerHTML =`
+    <div class='form-div'>
     <h2>Welcome to OHOHOH!</h2>
     <h4>Please Log In</h4>
     <form class='user-form'>
@@ -575,6 +584,7 @@ function userLogin(e){
         <input type='submit' name='submit' value='Log In'
         class='submit'/>
     </form>
+    </div>
     `
 
 let form = document.querySelector('form')
