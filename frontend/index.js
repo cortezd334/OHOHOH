@@ -420,8 +420,9 @@ function assignPetToUser(e) {
     } else if (e.target.matches('.deny-adoption-btn')){
         id = e.target.id
         id = id.split("-")
-        
+
         e.target.previousElementSibling.remove()
+        e.target.nextElementSibling.remove()
         e.target.remove()
 
         fetch(`http://localhost:3000/pets/${id[1]}`, {
@@ -532,7 +533,8 @@ const addNewPet = (e) => {
         age: newPetAge,
         breed: newPetBreed,
         bio: newPetBio,
-        agency_id: 12
+        agency_id: 14,
+        available: true
     }
 
     fetch('http://localhost:3000/pets', { 
