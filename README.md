@@ -13,6 +13,8 @@
 ## General Info
 OHOHOH, Open Hands Open Hearts Open Home, was created by Danira Cortez and Daniel Patnode for the purpose of learning Java Script, Rails, Active Record, HTML, and CSS. Through this single page application a User can adopt a pet and the agency can manage the adoption process. This Mod 3 Final Project for Flatiron School was presented on September 11, 2020.
 
+[![Watch the video](https://img.youtube.com/vi/Tctau4NhWMI/maxresdefault.jpg)](https://youtu.be/Tctau4NhWMI)
+
 ## Technologies
 - Java Script
 - Rails
